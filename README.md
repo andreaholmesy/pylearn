@@ -39,7 +39,7 @@ _Próximamente: link al deploy en vivo_
 
 **Sin dependencias de npm** — decisión consciente para minimizar la superficie de ataque de supply chain.
 
-## 🚀 Cómo correrlo localmente
+## 🚀 Cómo ejecutarlo localmente
 
 ### Requisitos previos
 
@@ -55,8 +55,8 @@ _Próximamente: link al deploy en vivo_
 
 ### Uso
 
-1. Abrí el navegador en `http://localhost:8000/app` para la interfaz web.
-2. También podés explorar la API en `http://localhost:8000/docs` (Swagger UI).
+1. Abre el navegador en `http://localhost:8000/app` para la interfaz web.
+2. También puedes explorar la API en `http://localhost:8000/docs` (Swagger UI).
 
 ## 📁 Estructura del proyecto
 
@@ -114,7 +114,7 @@ _Próximamente: link al deploy en vivo_
 
 ## 📝 Licencia
 
-MIT — Podés usar este código libremente, modificarlo y distribuirlo.
+MIT — Puedes usar este código libremente, modificarlo y distribuirlo.
 
 ## 👩‍💻 Autora
 
