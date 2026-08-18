@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyLearn — Aprende Python jugando</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/editor/editor.main.min.css">
+    
+    <style>
+        body { font-family: 'Nunito', sans-serif; }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+        .shake { animation: shake 0.3s ease-in-out; }
+        
+        .btn-duo {
+            box-shadow: 0 4px 0 0 rgb(0 0 0 / 0.15);
+            transition: all 0.1s ease;
+        }
+        .btn-duo:active:not(:disabled) {
+            box-shadow: 0 0 0 0 rgb(0 0 0 / 0.15);
+            transform: translateY(4px);
+        }
+        .btn-duo:disabled {
+            opacity: 0.5;
+            box-shadow: 0 4px 0 0 rgb(0 0 0 / 0.15);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    
+    <!-- HEADER -->
+    <header class="bg-white border-b-2 border-gray-100 sticky top-0 z-10">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-500 rounded-2xl flex items-center justify-center text-white text-2xl">
+                    🐍
+                </div>
+                <h1 class="text-2xl font-black text-gray-800">PyLearn</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 bg-orange-100 px-4 py-2 rounded-2xl">
+                    <span class="text-2xl">🔥</span>
+                    <span class="font-bold text-orange-600" id="racha">0</span>
+                </div>
+                <div class="flex items-center gap-2 bg-yellow-100 px-4 py-2 rounded-2xl">
+                    <span class="text-2xl">⭐</span>
+                    <span class="font-bold text-yellow-700" id="xp">0 XP</span>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- MAIN LAYOUT -->
+    <main class="max-w-6xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6">
+        
+        <!-- SIDEBAR: lista de ejercicios agrupados por nivel -->
+        <aside class="bg-white rounded-3xl p-6 border-2 border-gray-100 h-fit lg:sticky lg:top-24">
+            <h2 class="font-black text-lg text-gray-800 mb-4 flex items-center gap-2">
+                📚 Ejercicios
+            </h2>
+            <div id="progreso-global" class="mb-6 text-sm text-gray-500"></div>
+            <div id="lista-ejercicios" class="space-y-5">
+                <div class="text-gray-400 text-sm">Cargando...</div>
+            </div>
+        </aside>
+        
+        <!-- CONTENIDO PRINCIPAL -->
+        <section class="space-y-6">
+            
+            <div class="bg-white rounded-3xl p-8 border-2 border-gray-100">
+                <div class="flex items-center gap-3 mb-4" id="badges-container">
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wide">Selecciona un ejercicio</span>
+                </div>
+                <h2 class="text-3xl font-black text-gray-800 mb-4" id="ejercicio-titulo">
+                    Elige un ejercicio para empezar
+                </h2>
+                <p class="text-lg text-gray-600 leading-relaxed" id="ejercicio-enunciado">
+                    Selecciona un ejercicio de la barra lateral izquierda.
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-3xl border-2 border-gray-100 overflow-hidden">
+                <div class="bg-gray-800 px-6 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        <span class="text-gray-300 text-sm ml-3 font-mono">solucion.py</span>
+                    </div>
+                </div>
+                <div id="editor" style="height: 300px;"></div>
+            </div>
+            
+            <button
+                id="btn-enviar"
+                onclick="enviarSolucion()"
+                disabled
+                class="btn-duo w-full bg-green-500 hover:bg-green-600 text-white font-black text-lg uppercase tracking-wide py-4 rounded-2xl disabled:cursor-not-allowed"
+            >
+                Enviar solución 🚀
+            </button>
+            
+            <div id="resultados" class="hidden bg-white rounded-3xl p-8 border-2 border-gray-100"></div>
+            
+        </section>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.min.js"></script>
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        let ejercicios = [];
+        let ejercicioActual = null;
+        let editor = null;
+        let xp = parseInt(localStorage.getItem('xp') || '0');
+        let racha = parseInt(localStorage.getItem('racha') || '0');
+        let ejerciciosCompletados = JSON.parse(localStorage.getItem('completados') || '[]');
+        
+        // Configuración visual de cada nivel
+        const NIVELES = {
+            facil: {
+                label: 'Fácil',
+                emoji: '🌱',
+                color: 'green',
+                xp: 10
+            },
+            medio: {
+                label: 'Medio',
+                emoji: '🔥',
+                color: 'orange',
+                xp: 20
+            },
+            dificil: {
+                label: 'Difícil',
+                emoji: '💎',
+                color: 'purple',
+                xp: 40
+            }
+        };
+        
+        actualizarStats();
+        
+        require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: '# Elige un ejercicio de la izquierda para empezar',
+                language: 'python',
+                theme: 'vs-dark',
+                fontSize: 15,
+                fontFamily: 'Consolas, Monaco, monospace',
+                minimap: { enabled: false },
+                lineNumbers: 'on',
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+                padding: { top: 16, bottom: 16 }
+            });
+            
+            cargarEjercicios();
+        });
+        
+        async function cargarEjercicios() {
+            try {
+                const res = await fetch(`${API_BASE}/ejercicios`);
+                ejercicios = await res.json();
+                renderizarLista();
+                actualizarProgresoGlobal();
+            } catch (e) {
+                document.getElementById('lista-ejercicios').innerHTML = 
+                    '<div class="text-red-500 text-sm">Error al cargar. ¿Está corriendo la API?</div>';
+            }
+        }
+        
+        function renderizarLista() {
+            const cont = document.getElementById('lista-ejercicios');
+            
+            // Agrupar por nivel
+            const grupos = { facil: [], medio: [], dificil: [] };
+            ejercicios.forEach(ej => {
+                const nivel = ej.nivel || 'facil';
+                if (grupos[nivel]) grupos[nivel].push(ej);
+            });
+            
+            let html = '';
+            for (const [nivel, lista] of Object.entries(grupos)) {
+                if (lista.length === 0) continue;
+                
+                const config = NIVELES[nivel];
+                const completadosEnNivel = lista.filter(ej => ejerciciosCompletados.includes(ej.id)).length;
+                
+                html += `
+                    <div>
+                        <div class="flex items-center justify-between mb-2 px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">${config.emoji}</span>
+                                <span class="font-black text-sm text-gray-700 uppercase tracking-wider">${config.label}</span>
+                            </div>
+                            <span class="text-xs font-bold text-gray-400">${completadosEnNivel}/${lista.length}</span>
+                        </div>
+                        <div class="space-y-2">
+                `;
+                
+                lista.forEach(ej => {
+                    const completado = ejerciciosCompletados.includes(ej.id);
+                    const activo = ejercicioActual && ejercicioActual.id === ej.id;
+                    
+                    const borderClass = activo
+                        ? `border-${config.color}-400 bg-${config.color}-50`
+                        : completado
+                            ? 'border-gray-200 bg-gray-50'
+                            : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50';
+                    
+                    html += `
+                        <button
+                            onclick="cargarEjercicio(${ej.id})"
+                            class="w-full text-left px-4 py-3 rounded-2xl border-2 transition-all ${borderClass}"
+                        >
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1 min-w-0">
+                                    <div class="font-bold text-gray-800 text-sm truncate">${ej.titulo}</div>
+                                    <div class="text-xs text-gray-500 mt-1">${ej.cantidad_tests} tests</div>
+                                </div>
+                                ${completado ? '<span class="text-xl ml-2">⭐</span>' : ''}
+                            </div>
+                        </button>
+                    `;
+                });
+                
+                html += '</div></div>';
+            }
+            
+            cont.innerHTML = html;
+        }
+        
+        function actualizarProgresoGlobal() {
+            const total = ejercicios.length;
+            const hechos = ejerciciosCompletados.length;
+            const porc = total > 0 ? Math.round((hechos / total) * 100) : 0;
+            document.getElementById('progreso-global').innerHTML = `
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-bold text-gray-700">Progreso total</span>
+                    <span class="text-gray-500">${hechos}/${total}</span>
+                </div>
+                <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-green-500 transition-all" style="width: ${porc}%"></div>
+                </div>
+            `;
+        }
+        
+        async function cargarEjercicio(id) {
+            try {
+                const res = await fetch(`${API_BASE}/ejercicios/${id}`);
+                ejercicioActual = await res.json();
+                
+                const nivel = ejercicioActual.nivel || 'facil';
+                const config = NIVELES[nivel];
+                
+                document.getElementById('badges-container').innerHTML = `
+                    <span class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide bg-${config.color}-100 text-${config.color}-700">
+                        ${config.emoji} ${config.label}
+                    </span>
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wide">
+                        +${config.xp} XP
+                    </span>
+                `;
+                
+                document.getElementById('ejercicio-titulo').textContent = ejercicioActual.titulo;
+                document.getElementById('ejercicio-enunciado').textContent = ejercicioActual.enunciado;
+                editor.setValue(ejercicioActual.codigo_inicial);
+                
+                document.getElementById('btn-enviar').disabled = false;
+                document.getElementById('resultados').classList.add('hidden');
+                
+                renderizarLista();
+            } catch (e) {
+                alert('Error al cargar el ejercicio');
+            }
+        }
+        
+        async function enviarSolucion() {
+            if (!ejercicioActual) return;
+            
+            const btn = document.getElementById('btn-enviar');
+            btn.disabled = true;
+            btn.textContent = 'Corrigiendo...';
+            
+            try {
+                const res = await fetch(`${API_BASE}/corregir`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        codigo: editor.getValue(),
+                        ejercicio_id: ejercicioActual.id
+                    })
+                });
+                const resultado = await res.json();
+                mostrarResultado(resultado);
+            } catch (e) {
+                alert('Error al corregir');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Enviar solución 🚀';
+            }
+        }
+        
+        function mostrarResultado(r) {
+            const cont = document.getElementById('resultados');
+            cont.classList.remove('hidden', 'shake');
+            
+            const porcentaje = Math.round((r.tests_pasados / r.tests_totales) * 100);
+            const nivel = ejercicioActual.nivel || 'facil';
+            const xpGanada = NIVELES[nivel].xp;
+            
+            let html = '';
+            
+            if (r.todo_ok) {
+                if (!ejerciciosCompletados.includes(ejercicioActual.id)) {
+                    ejerciciosCompletados.push(ejercicioActual.id);
+                    xp += xpGanada;
+                    racha += 1;
+                    localStorage.setItem('xp', xp);
+                    localStorage.setItem('racha', racha);
+                    localStorage.setItem('completados', JSON.stringify(ejerciciosCompletados));
+                    actualizarStats();
+                    renderizarLista();
+                    actualizarProgresoGlobal();
+                }
+                
+                html = `
+                    <div class="text-center py-4">
+                        <div class="text-6xl mb-3">🎉</div>
+                        <h3 class="text-2xl font-black text-green-600 mb-2">¡Perfecto!</h3>
+                        <p class="text-gray-600 mb-4">Pasaste los ${r.tests_totales} tests</p>
+                        <div class="inline-block bg-yellow-100 px-4 py-2 rounded-full font-bold text-yellow-700">
+                            +${xpGanada} XP
+                        </div>
+                    </div>
+                `;
+            } else {
+                cont.classList.add('shake');
+                racha = 0;
+                localStorage.setItem('racha', racha);
+                actualizarStats();
+                
+                html = `
+                    <div class="mb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-black text-gray-800">Casi lo tienes</h3>
+                            <span class="font-bold text-gray-600">${r.tests_pasados}/${r.tests_totales}</span>
+                        </div>
+                        <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-green-500 rounded-full transition-all" style="width: ${porcentaje}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += '<div class="space-y-3 mt-4">';
+            r.detalles.forEach((det, i) => {
+                if (det.paso) {
+                    html += `
+                        <div class="flex items-start gap-3 p-4 bg-green-50 border-2 border-green-200 rounded-2xl">
+                            <span class="text-2xl">✅</span>
+                            <div class="flex-1">
+                                <div class="font-bold text-green-800 text-sm">Test ${i+1}</div>
+                                <code class="text-xs text-gray-700 font-mono">${det.entrada}</code>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="flex items-start gap-3 p-4 bg-red-50 border-2 border-red-200 rounded-2xl">
+                            <span class="text-2xl">❌</span>
+                            <div class="flex-1">
+                                <div class="font-bold text-red-800 text-sm mb-1">Test ${i+1}</div>
+                                <code class="text-xs text-gray-700 font-mono block mb-2">${det.entrada}</code>
+                                <div class="text-xs text-gray-600">
+                                    <span class="font-bold">Esperado:</span> <code>${det.esperado}</code><br>
+                                    <span class="font-bold">Obtenido:</span> <code>${det.obtenido}</code>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            html += '</div>';
+            
+            cont.innerHTML = html;
+            cont.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function actualizarStats() {
+            document.getElementById('xp').textContent = `${xp} XP`;
+            document.getElementById('racha').textContent = racha;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+[
+  {
+    "id": 1,
+    "titulo": "Función es_par",
+    "nivel": "facil",
+    "enunciado": "Escribe una función llamada 'es_par' que reciba un número entero y devuelva True si es par, False si es impar.",
+    "codigo_inicial": "def es_par(n):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "es_par(2)", "esperado": "True"},
+      {"entrada": "es_par(7)", "esperado": "False"},
+      {"entrada": "es_par(0)", "esperado": "True"},
+      {"entrada": "es_par(-4)", "esperado": "True"}
+    ]
+  },
+  {
+    "id": 2,
+    "titulo": "Suma de lista",
+    "nivel": "facil",
+    "enunciado": "Escribe una función 'sumar_lista' que reciba una lista de números y devuelva la suma de todos.",
+    "codigo_inicial": "def sumar_lista(numeros):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "sumar_lista([1, 2, 3])", "esperado": "6"},
+      {"entrada": "sumar_lista([])", "esperado": "0"},
+      {"entrada": "sumar_lista([-1, 1])", "esperado": "0"},
+      {"entrada": "sumar_lista([100])", "esperado": "100"}
+    ]
+  },
+  {
+    "id": 3,
+    "titulo": "Cadena al revés",
+    "nivel": "facil",
+    "enunciado": "Escribe una función 'invertir' que reciba una cadena de texto y la devuelva al revés.",
+    "codigo_inicial": "def invertir(texto):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "invertir('hola')", "esperado": "'aloh'"},
+      {"entrada": "invertir('')", "esperado": "''"},
+      {"entrada": "invertir('a')", "esperado": "'a'"},
+      {"entrada": "invertir('Python')", "esperado": "'nohtyP'"}
+    ]
+  },
+  {
+    "id": 4,
+    "titulo": "Contar vocales",
+    "nivel": "facil",
+    "enunciado": "Escribe una función 'contar_vocales' que reciba una cadena y devuelva cuántas vocales tiene (a, e, i, o, u en minúscula o mayúscula).",
+    "codigo_inicial": "def contar_vocales(texto):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "contar_vocales('hola')", "esperado": "2"},
+      {"entrada": "contar_vocales('Python')", "esperado": "1"},
+      {"entrada": "contar_vocales('AEIOU')", "esperado": "5"},
+      {"entrada": "contar_vocales('bcdfg')", "esperado": "0"},
+      {"entrada": "contar_vocales('')", "esperado": "0"}
+    ]
+  },
+  {
+    "id": 5,
+    "titulo": "Máximo de una lista",
+    "nivel": "facil",
+    "enunciado": "Escribe una función 'maximo' que reciba una lista de números y devuelva el mayor. No uses la función max() de Python.",
+    "codigo_inicial": "def maximo(numeros):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "maximo([1, 2, 3])", "esperado": "3"},
+      {"entrada": "maximo([-5, -1, -10])", "esperado": "-1"},
+      {"entrada": "maximo([42])", "esperado": "42"},
+      {"entrada": "maximo([5, 5, 5])", "esperado": "5"}
+    ]
+  },
+  {
+    "id": 6,
+    "titulo": "FizzBuzz",
+    "nivel": "medio",
+    "enunciado": "Escribe una función 'fizzbuzz' que reciba un número n y devuelva una lista de strings del 1 al n, pero: si el número es múltiplo de 3 pon 'Fizz', si es múltiplo de 5 pon 'Buzz', si es múltiplo de ambos pon 'FizzBuzz', y si no es múltiplo de ninguno pon el número como string.",
+    "codigo_inicial": "def fizzbuzz(n):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "fizzbuzz(5)", "esperado": "['1', '2', 'Fizz', '4', 'Buzz']"},
+      {"entrada": "fizzbuzz(15)", "esperado": "['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'FizzBuzz']"},
+      {"entrada": "fizzbuzz(3)", "esperado": "['1', '2', 'Fizz']"},
+      {"entrada": "fizzbuzz(1)", "esperado": "['1']"}
+    ]
+  },
+  {
+    "id": 7,
+    "titulo": "Palíndromo",
+    "nivel": "medio",
+    "enunciado": "Escribe una función 'es_palindromo' que reciba una cadena y devuelva True si es un palíndromo (se lee igual de izquierda a derecha que de derecha a izquierda), ignorando mayúsculas y espacios.",
+    "codigo_inicial": "def es_palindromo(texto):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "es_palindromo('anita lava la tina')", "esperado": "True"},
+      {"entrada": "es_palindromo('Reconocer')", "esperado": "True"},
+      {"entrada": "es_palindromo('hola')", "esperado": "False"},
+      {"entrada": "es_palindromo('')", "esperado": "True"},
+      {"entrada": "es_palindromo('a')", "esperado": "True"}
+    ]
+  },
+  {
+    "id": 8,
+    "titulo": "Contador de palabras",
+    "nivel": "medio",
+    "enunciado": "Escribe una función 'contar_palabras' que reciba una cadena de texto y devuelva un diccionario donde las claves son las palabras y los valores son cuántas veces aparece cada una. Las palabras se separan por espacios.",
+    "codigo_inicial": "def contar_palabras(texto):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "contar_palabras('hola mundo hola')", "esperado": "{'hola': 2, 'mundo': 1}"},
+      {"entrada": "contar_palabras('a a a b')", "esperado": "{'a': 3, 'b': 1}"},
+      {"entrada": "contar_palabras('python')", "esperado": "{'python': 1}"},
+      {"entrada": "contar_palabras('')", "esperado": "{}"}
+    ]
+  },
+  {
+    "id": 9,
+    "titulo": "Números primos hasta N",
+    "nivel": "medio",
+    "enunciado": "Escribe una función 'primos_hasta' que reciba un número n y devuelva una lista con todos los números primos desde 2 hasta n (inclusive). Un número primo solo es divisible por 1 y por sí mismo.",
+    "codigo_inicial": "def primos_hasta(n):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "primos_hasta(10)", "esperado": "[2, 3, 5, 7]"},
+      {"entrada": "primos_hasta(2)", "esperado": "[2]"},
+      {"entrada": "primos_hasta(1)", "esperado": "[]"},
+      {"entrada": "primos_hasta(20)", "esperado": "[2, 3, 5, 7, 11, 13, 17, 19]"}
+    ]
+  },
+  {
+    "id": 10,
+    "titulo": "Ordenar por longitud",
+    "nivel": "medio",
+    "enunciado": "Escribe una función 'ordenar_por_longitud' que reciba una lista de strings y la devuelva ordenada de menor a mayor longitud. Si dos tienen la misma longitud, deben mantener el orden original.",
+    "codigo_inicial": "def ordenar_por_longitud(palabras):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "ordenar_por_longitud(['casa', 'a', 'perro'])", "esperado": "['a', 'casa', 'perro']"},
+      {"entrada": "ordenar_por_longitud(['sol', 'luna'])", "esperado": "['sol', 'luna']"},
+      {"entrada": "ordenar_por_longitud([])", "esperado": "[]"},
+      {"entrada": "ordenar_por_longitud(['abc', 'de', 'fgh'])", "esperado": "['de', 'abc', 'fgh']"}
+    ]
+  },
+  {
+    "id": 11,
+    "titulo": "Fibonacci",
+    "nivel": "dificil",
+    "enunciado": "Escribe una función 'fibonacci' que reciba un número n y devuelva una lista con los primeros n números de la sucesión de Fibonacci (0, 1, 1, 2, 3, 5, 8...). Cada número es la suma de los dos anteriores.",
+    "codigo_inicial": "def fibonacci(n):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "fibonacci(1)", "esperado": "[0]"},
+      {"entrada": "fibonacci(2)", "esperado": "[0, 1]"},
+      {"entrada": "fibonacci(7)", "esperado": "[0, 1, 1, 2, 3, 5, 8]"},
+      {"entrada": "fibonacci(0)", "esperado": "[]"},
+      {"entrada": "fibonacci(10)", "esperado": "[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]"}
+    ]
+  },
+  {
+    "id": 12,
+    "titulo": "Anagramas",
+    "nivel": "dificil",
+    "enunciado": "Escribe una función 'son_anagramas' que reciba dos cadenas y devuelva True si son anagramas (tienen exactamente las mismas letras, en cualquier orden), ignorando mayúsculas y espacios.",
+    "codigo_inicial": "def son_anagramas(a, b):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "son_anagramas('roma', 'amor')", "esperado": "True"},
+      {"entrada": "son_anagramas('Python', 'typhon')", "esperado": "True"},
+      {"entrada": "son_anagramas('hola', 'chau')", "esperado": "False"},
+      {"entrada": "son_anagramas('listen', 'silent')", "esperado": "True"},
+      {"entrada": "son_anagramas('abc', 'abcd')", "esperado": "False"}
+    ]
+  },
+  {
+    "id": 13,
+    "titulo": "Aplanar lista",
+    "nivel": "dificil",
+    "enunciado": "Escribe una función 'aplanar' que reciba una lista que puede contener números o listas anidadas (de cualquier profundidad) y devuelva una lista plana con todos los números en el orden en que aparecen.",
+    "codigo_inicial": "def aplanar(lista):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "aplanar([1, 2, 3])", "esperado": "[1, 2, 3]"},
+      {"entrada": "aplanar([1, [2, 3], 4])", "esperado": "[1, 2, 3, 4]"},
+      {"entrada": "aplanar([1, [2, [3, [4]]]])", "esperado": "[1, 2, 3, 4]"},
+      {"entrada": "aplanar([])", "esperado": "[]"},
+      {"entrada": "aplanar([[1, 2], [3, [4, 5]]])", "esperado": "[1, 2, 3, 4, 5]"}
+    ]
+  },
+  {
+    "id": 14,
+    "titulo": "Balancear paréntesis",
+    "nivel": "dificil",
+    "enunciado": "Escribe una función 'balanceado' que reciba una cadena con paréntesis, corchetes y llaves, y devuelva True si están bien balanceados (cada apertura tiene su cierre correspondiente en el orden correcto). Ejemplo: '({[]})' es válido, '([)]' no lo es.",
+    "codigo_inicial": "def balanceado(cadena):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "balanceado('()')", "esperado": "True"},
+      {"entrada": "balanceado('({[]})')", "esperado": "True"},
+      {"entrada": "balanceado('([)]')", "esperado": "False"},
+      {"entrada": "balanceado('(((')", "esperado": "False"},
+      {"entrada": "balanceado('')", "esperado": "True"},
+      {"entrada": "balanceado('{[()]}')", "esperado": "True"}
+    ]
+  },
+  {
+    "id": 15,
+    "titulo": "Números romanos",
+    "nivel": "dificil",
+    "enunciado": "Escribe una función 'a_romano' que reciba un número entero entre 1 y 3999 y devuelva su representación en números romanos. Símbolos: I=1, V=5, X=10, L=50, C=100, D=500, M=1000. Recuerda que 4=IV, 9=IX, 40=XL, 90=XC, 400=CD, 900=CM.",
+    "codigo_inicial": "def a_romano(n):\n    # Tu código aquí\n    pass\n",
+    "tests": [
+      {"entrada": "a_romano(1)", "esperado": "'I'"},
+      {"entrada": "a_romano(4)", "esperado": "'IV'"},
+      {"entrada": "a_romano(9)", "esperado": "'IX'"},
+      {"entrada": "a_romano(58)", "esperado": "'LVIII'"},
+      {"entrada": "a_romano(1994)", "esperado": "'MCMXCIV'"},
+      {"entrada": "a_romano(3999)", "esperado": "'MMMCMXCIX'"}
+    ]
+  }
+]
