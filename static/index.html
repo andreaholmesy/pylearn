@@ -11,6 +11,11 @@
     
     <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/editor/editor.main.min.css">
     
+    <!-- Highlight.js para resaltado de sintaxis en el editor móvil -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/vs2015.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/languages/python.min.js"></script>
+    
     <style>
         body { 
             font-family: 'Nunito', sans-serif;
@@ -48,6 +53,98 @@
             opacity: 0.5;
             box-shadow: 0 4px 0 0 rgb(0 0 0 / 0.15);
         }
+        
+        /* ============================================================ */
+        /* EDITOR MÓVIL con resaltado de sintaxis (textarea + code) */
+        /* ============================================================ */
+        
+        .editor-mobile-wrapper {
+            position: relative;
+            display: flex;
+            background: #1e1e1e;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.5;
+            min-height: 320px;
+        }
+        
+        .editor-mobile-lines {
+            padding: 16px 8px 16px 16px;
+            color: #858585;
+            text-align: right;
+            user-select: none;
+            min-width: 40px;
+            white-space: pre;
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            z-index: 2;
+        }
+        
+        .editor-mobile-code-wrapper {
+            position: relative;
+            flex: 1;
+            min-height: 288px;
+            overflow: hidden;
+        }
+        
+        /* El code resaltado se ve, el textarea está encima transparente */
+        .editor-mobile-highlight {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 16px 16px 16px 8px;
+            margin: 0;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            white-space: pre;
+            overflow-x: auto;
+            overflow-y: hidden;
+            pointer-events: none;
+            background: transparent !important;
+        }
+        
+        .editor-mobile-highlight code {
+            background: transparent !important;
+            padding: 0 !important;
+            font-family: inherit !important;
+            display: block;
+        }
+        
+        .editor-mobile-textarea {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent;
+            color: transparent;
+            caret-color: white;
+            border: none;
+            outline: none;
+            padding: 16px 16px 16px 8px;
+            margin: 0;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: inherit;
+            resize: none;
+            white-space: pre;
+            overflow-x: auto;
+            overflow-y: hidden;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        /* Selección visible aunque el texto sea transparente */
+        .editor-mobile-textarea::selection {
+            background: rgba(58, 116, 202, 0.5);
+            color: transparent;
+        }
+        
+        /* Tema hljs vs2015 override para consistencia */
+        .hljs { background: transparent !important; }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -55,8 +152,6 @@
     <!-- HEADER -->
     <header class="bg-white border-b-2 border-gray-100 sticky top-0 z-30">
         <div class="max-w-6xl mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-2">
-            
-            <!-- Izquierda: botón menú (solo móvil) + logo -->
             <div class="flex items-center gap-2 md:gap-3 min-w-0">
                 <button 
                     onclick="toggleSidebar()"
@@ -76,7 +171,6 @@
                 </button>
             </div>
             
-            <!-- Derecha: stats (compactos en móvil) -->
             <div class="flex items-center gap-2 flex-shrink-0">
                 <div class="flex items-center gap-1 md:gap-2 bg-orange-100 px-2.5 md:px-4 py-1.5 md:py-2 rounded-2xl">
                     <span class="text-lg md:text-2xl">🔥</span>
@@ -90,17 +184,14 @@
         </div>
     </header>
     
-    <!-- OVERLAY oscuro (para cerrar sidebar tocando afuera en móvil) -->
     <div 
         id="sidebar-overlay" 
         onclick="toggleSidebar()" 
         class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden"
     ></div>
     
-    <!-- MAIN LAYOUT -->
     <main class="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8 lg:grid lg:grid-cols-[300px_1fr] lg:gap-6">
         
-        <!-- SIDEBAR (drawer en móvil, fija en desktop) -->
         <aside 
             id="sidebar"
             class="hidden lg:block fixed lg:static inset-y-0 left-0 w-[280px] lg:w-auto bg-white lg:rounded-3xl p-6 border-r-2 lg:border-2 border-gray-100 z-50 lg:z-auto overflow-y-auto lg:h-fit lg:sticky lg:top-24"
@@ -125,10 +216,8 @@
             </div>
         </aside>
         
-        <!-- CONTENIDO PRINCIPAL -->
         <section class="space-y-4 md:space-y-6">
             
-            <!-- PANTALLA DE BIENVENIDA -->
             <div id="bienvenida" class="fade-in space-y-4 md:space-y-6">
                 
                 <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-6 md:p-12 text-white">
@@ -145,40 +234,26 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                     <div class="bg-white rounded-2xl md:rounded-3xl p-5 md:p-6 border-2 border-gray-100">
-                        <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl mb-3">
-                            📖
-                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-2xl mb-3">📖</div>
                         <h3 class="font-black text-gray-800 mb-2">1. Lee el enunciado</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Cada ejercicio te dice qué función tienes que escribir y qué debe hacer.
-                        </p>
+                        <p class="text-sm text-gray-600 leading-relaxed">Cada ejercicio te dice qué función tienes que escribir y qué debe hacer.</p>
                     </div>
                     
                     <div class="bg-white rounded-2xl md:rounded-3xl p-5 md:p-6 border-2 border-gray-100">
-                        <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl mb-3">
-                            ✏️
-                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl mb-3">✏️</div>
                         <h3 class="font-black text-gray-800 mb-2">2. Escribe tu código</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Usa el editor con resaltado de sintaxis. Puedes probar todas las veces que quieras.
-                        </p>
+                        <p class="text-sm text-gray-600 leading-relaxed">Usa el editor con resaltado de sintaxis. Puedes probar todas las veces que quieras.</p>
                     </div>
                     
                     <div class="bg-white rounded-2xl md:rounded-3xl p-5 md:p-6 border-2 border-gray-100">
-                        <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-2xl mb-3">
-                            ✅
-                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-2xl mb-3">✅</div>
                         <h3 class="font-black text-gray-800 mb-2">3. Recibe feedback</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            El sistema corre tests automáticos y te dice qué pasó y qué falló.
-                        </p>
+                        <p class="text-sm text-gray-600 leading-relaxed">El sistema corre tests automáticos y te dice qué pasó y qué falló.</p>
                     </div>
                 </div>
                 
                 <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 border-2 border-gray-100 text-center">
-                    <h2 class="text-xl md:text-2xl font-black text-gray-800 mb-4 md:mb-6">
-                        ¿Lista para empezar?
-                    </h2>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-800 mb-4 md:mb-6">¿Lista para empezar?</h2>
                     
                     <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-6">
                         <div>
@@ -202,13 +277,10 @@
                         Empezar 🚀
                     </button>
                     
-                    <p class="text-xs text-gray-400 mt-4">
-                        No necesitas registrarte. Tu progreso se guarda en este navegador.
-                    </p>
+                    <p class="text-xs text-gray-400 mt-4">No necesitas registrarte. Tu progreso se guarda en este navegador.</p>
                 </div>
             </div>
             
-            <!-- PANTALLA DE EJERCICIO -->
             <div id="pantalla-ejercicio" class="hidden space-y-4 md:space-y-6">
                 
                 <button
@@ -241,7 +313,25 @@
                         </div>
                         <div id="editor-status" class="text-xs font-bold"></div>
                     </div>
-                    <div id="editor" style="height: 320px;"></div>
+                    
+                    <!-- Editor Monaco (desktop) -->
+                    <div id="editor-monaco" style="height: 320px;"></div>
+                    
+                    <!-- Editor Mobile con resaltado de sintaxis -->
+                    <div id="editor-mobile-container" class="editor-mobile-wrapper hidden">
+                        <div id="editor-mobile-lines" class="editor-mobile-lines">1</div>
+                        <div class="editor-mobile-code-wrapper">
+                            <pre class="editor-mobile-highlight"><code id="editor-mobile-highlight" class="language-python hljs"></code></pre>
+                            <textarea 
+                                id="editor-mobile-textarea"
+                                class="editor-mobile-textarea"
+                                spellcheck="false"
+                                autocorrect="off"
+                                autocapitalize="off"
+                                autocomplete="off"
+                            ></textarea>
+                        </div>
+                    </div>
                 </div>
                 
                 <div id="linter-warning" class="hidden bg-amber-50 border-2 border-amber-200 rounded-2xl p-4">
@@ -275,11 +365,12 @@
         const API_BASE = window.location.origin;
         let ejercicios = [];
         let ejercicioActual = null;
-        let editor = null;
         let xp = parseInt(localStorage.getItem('xp') || '0');
         let racha = parseInt(localStorage.getItem('racha') || '0');
         let ejerciciosCompletados = JSON.parse(localStorage.getItem('completados') || '[]');
         let lintTimeout = null;
+        
+        const ES_MOVIL = window.innerWidth < 1024;
         
         const NIVELES = {
             facil: { label: 'Fácil', emoji: '🌱', color: 'green', xp: 10 },
@@ -290,7 +381,129 @@
         actualizarStats();
         
         // ==========================================================================
-        // SIDEBAR TOGGLE (para móvil)
+        // WRAPPER DE EDITOR
+        // ==========================================================================
+        const editorAPI = {
+            _monaco: null,
+            _textarea: null,
+            _highlight: null,
+            
+            getValue() {
+                if (ES_MOVIL) return this._textarea ? this._textarea.value : '';
+                return this._monaco ? this._monaco.getValue() : '';
+            },
+            
+            setValue(text) {
+                if (ES_MOVIL) {
+                    if (this._textarea) {
+                        this._textarea.value = text;
+                        actualizarEditorMobile();
+                    }
+                } else {
+                    if (this._monaco) this._monaco.setValue(text);
+                }
+            }
+        };
+        
+        function actualizarEditorMobile() {
+            const textarea = document.getElementById('editor-mobile-textarea');
+            const highlight = document.getElementById('editor-mobile-highlight');
+            const linesDiv = document.getElementById('editor-mobile-lines');
+            if (!textarea || !highlight || !linesDiv) return;
+            
+            // Actualizar highlight
+            const code = textarea.value;
+            highlight.textContent = code;
+            if (window.hljs) {
+                delete highlight.dataset.highlighted;
+                hljs.highlightElement(highlight);
+            }
+            
+            // Actualizar números de línea
+            const numLineas = (code.match(/\n/g) || []).length + 1;
+            const lineas = [];
+            for (let i = 1; i <= numLineas; i++) lineas.push(i);
+            linesDiv.textContent = lineas.join('\n');
+            
+            // Ajustar altura
+            textarea.style.height = 'auto';
+            const nuevaAltura = Math.max(288, textarea.scrollHeight);
+            textarea.style.height = nuevaAltura + 'px';
+            
+            // Sincronizar scroll horizontal entre textarea y highlight
+            const preElement = highlight.parentElement;
+            preElement.scrollLeft = textarea.scrollLeft;
+        }
+        
+        // ==========================================================================
+        // INICIALIZACIÓN
+        // ==========================================================================
+        function inicializarEditor() {
+            if (ES_MOVIL) {
+                document.getElementById('editor-monaco').classList.add('hidden');
+                document.getElementById('editor-mobile-container').classList.remove('hidden');
+                
+                const textarea = document.getElementById('editor-mobile-textarea');
+                editorAPI._textarea = textarea;
+                editorAPI._highlight = document.getElementById('editor-mobile-highlight');
+                
+                textarea.addEventListener('input', () => {
+                    actualizarEditorMobile();
+                    if (lintTimeout) clearTimeout(lintTimeout);
+                    lintTimeout = setTimeout(analizarCodigo, 500);
+                });
+                
+                textarea.addEventListener('scroll', () => {
+                    const preElement = editorAPI._highlight.parentElement;
+                    preElement.scrollLeft = textarea.scrollLeft;
+                });
+                
+                textarea.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        const start = textarea.selectionStart;
+                        const end = textarea.selectionEnd;
+                        textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
+                        textarea.selectionStart = textarea.selectionEnd = start + 4;
+                        actualizarEditorMobile();
+                    }
+                });
+                
+                actualizarEditorMobile();
+                cargarEjercicios();
+            } else {
+                require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' }});
+                require(['vs/editor/editor.main'], function() {
+                    editorAPI._monaco = monaco.editor.create(document.getElementById('editor-monaco'), {
+                        value: '# Elige un ejercicio de la izquierda para empezar',
+                        language: 'python',
+                        theme: 'vs-dark',
+                        fontSize: 15,
+                        fontFamily: 'Consolas, Monaco, monospace',
+                        minimap: { enabled: false },
+                        lineNumbers: 'on',
+                        scrollBeyondLastLine: false,
+                        automaticLayout: true,
+                        padding: { top: 16, bottom: 16 },
+                        tabSize: 4,
+                        insertSpaces: true,
+                        detectIndentation: false
+                    });
+                    
+                    editorAPI._monaco.onDidChangeModelContent(() => {
+                        if (lintTimeout) clearTimeout(lintTimeout);
+                        lintTimeout = setTimeout(analizarCodigo, 500);
+                    });
+                    
+                    cargarEjercicios();
+                });
+            }
+        }
+        
+        inicializarEditor();
+        
+        // ==========================================================================
+        // SIDEBAR TOGGLE
         // ==========================================================================
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -310,41 +523,12 @@
         }
         
         // ==========================================================================
-        // MONACO EDITOR
-        // ==========================================================================
-        require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' }});
-        require(['vs/editor/editor.main'], function() {
-            editor = monaco.editor.create(document.getElementById('editor'), {
-                value: '# Elige un ejercicio de la izquierda para empezar',
-                language: 'python',
-                theme: 'vs-dark',
-                fontSize: 15,
-                fontFamily: 'Consolas, Monaco, monospace',
-                minimap: { enabled: false },
-                lineNumbers: 'on',
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                padding: { top: 16, bottom: 16 },
-                tabSize: 4,
-                insertSpaces: true,
-                detectIndentation: false
-            });
-            
-            editor.onDidChangeModelContent(() => {
-                if (lintTimeout) clearTimeout(lintTimeout);
-                lintTimeout = setTimeout(analizarCodigo, 500);
-            });
-            
-            cargarEjercicios();
-        });
-        
-        // ==========================================================================
         // LINTER
         // ==========================================================================
         function analizarCodigo() {
-            if (!editor || !ejercicioActual) return;
+            if (!ejercicioActual) return;
             
-            const codigo = editor.getValue();
+            const codigo = editorAPI.getValue();
             const lineas = codigo.split('\n');
             const errores = [];
             const markers = [];
@@ -356,39 +540,47 @@
                 const indentacion = linea.match(/^[\t ]*/)[0];
                 if (indentacion.includes('\t') && indentacion.includes(' ')) {
                     errores.push({ linea: numLinea, mensaje: `Línea ${numLinea}: mezclas tabs y espacios en la indentación. Usa solo espacios.` });
-                    markers.push({
-                        severity: monaco.MarkerSeverity.Error,
-                        message: 'Indentación mixta: mezcla de tabs y espacios. Usa solo espacios.',
-                        startLineNumber: numLinea, startColumn: 1,
-                        endLineNumber: numLinea, endColumn: indentacion.length + 1
-                    });
+                    if (!ES_MOVIL) {
+                        markers.push({
+                            severity: monaco.MarkerSeverity.Error,
+                            message: 'Indentación mixta.',
+                            startLineNumber: numLinea, startColumn: 1,
+                            endLineNumber: numLinea, endColumn: indentacion.length + 1
+                        });
+                    }
                 }
                 
                 const espacios = linea.match(/^ */)[0].length;
                 if (espacios > 0 && espacios % 4 !== 0 && !indentacion.includes('\t')) {
                     errores.push({ linea: numLinea, mensaje: `Línea ${numLinea}: la indentación tiene ${espacios} espacios (debería ser múltiplo de 4).` });
-                    markers.push({
-                        severity: monaco.MarkerSeverity.Warning,
-                        message: `Indentación de ${espacios} espacios. Convención Python: usar 4 espacios por nivel.`,
-                        startLineNumber: numLinea, startColumn: 1,
-                        endLineNumber: numLinea, endColumn: espacios + 1
-                    });
+                    if (!ES_MOVIL) {
+                        markers.push({
+                            severity: monaco.MarkerSeverity.Warning,
+                            message: `Indentación de ${espacios} espacios.`,
+                            startLineNumber: numLinea, startColumn: 1,
+                            endLineNumber: numLinea, endColumn: espacios + 1
+                        });
+                    }
                 }
                 
                 const trimmed = linea.trim();
                 const patrones = [/^def\s+\w+\s*\([^)]*\)\s*$/, /^if\s+.+[^:]$/, /^for\s+.+[^:]$/, /^while\s+.+[^:]$/, /^else\s*$/, /^elif\s+.+[^:]$/];
                 if (patrones.some(p => p.test(trimmed))) {
                     errores.push({ linea: numLinea, mensaje: `Línea ${numLinea}: falta el ":" al final.` });
-                    markers.push({
-                        severity: monaco.MarkerSeverity.Error,
-                        message: 'Falta el ":" al final de la línea (necesario en def, if, for, while, else, elif).',
-                        startLineNumber: numLinea, startColumn: linea.length,
-                        endLineNumber: numLinea, endColumn: linea.length + 1
-                    });
+                    if (!ES_MOVIL) {
+                        markers.push({
+                            severity: monaco.MarkerSeverity.Error,
+                            message: 'Falta ":" al final.',
+                            startLineNumber: numLinea, startColumn: linea.length,
+                            endLineNumber: numLinea, endColumn: linea.length + 1
+                        });
+                    }
                 }
             });
             
-            monaco.editor.setModelMarkers(editor.getModel(), 'linter', markers);
+            if (!ES_MOVIL && editorAPI._monaco) {
+                monaco.editor.setModelMarkers(editorAPI._monaco.getModel(), 'linter', markers);
+            }
             mostrarErroresLinter(errores);
         }
         
@@ -514,7 +706,6 @@
             renderizarLista();
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
-            // Cerrar sidebar en móvil si está abierta
             const sidebar = document.getElementById('sidebar');
             if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) {
                 toggleSidebar();
@@ -540,7 +731,7 @@
                 
                 document.getElementById('ejercicio-titulo').textContent = ejercicioActual.titulo;
                 document.getElementById('ejercicio-enunciado').textContent = ejercicioActual.enunciado;
-                editor.setValue(ejercicioActual.codigo_inicial);
+                editorAPI.setValue(ejercicioActual.codigo_inicial);
                 
                 document.getElementById('btn-enviar').disabled = false;
                 document.getElementById('resultados').classList.add('hidden');
@@ -555,7 +746,6 @@
                 renderizarLista();
                 analizarCodigo();
                 
-                // Cerrar sidebar en móvil después de elegir
                 const sidebar = document.getElementById('sidebar');
                 if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) {
                     toggleSidebar();
@@ -576,7 +766,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        codigo: editor.getValue(),
+                        codigo: editorAPI.getValue(),
                         ejercicio_id: ejercicioActual.id
                     })
                 });
