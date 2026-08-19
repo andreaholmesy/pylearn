@@ -46,8 +46,8 @@ El navegador carga la interfaz desde el servidor FastAPI. Cuando el usuario inte
 1. El navegador carga index.html desde la ruta /app.
 2. JavaScript hace un GET a /ejercicios para llenar la lista de la sidebar.
 3. Al elegir un ejercicio, hace GET a /ejercicios/{id} para traer el enunciado.
-4. Cuando el usuario da "Enviar solución", hace POST a /corregir con el código.
-5. FastAPI recibe el pedido y llama a corregir() en corrector.py.
+4. Cuando el usuario hace clic en "Enviar solución", hace POST a /corregir con el código.
+5. FastAPI recibe la petición y llama a corregir() en corrector.py.
 6. corrector.py construye un script con el código del usuario más los tests, y llama a ejecutar_codigo() en motor.py.
 7. motor.py crea un archivo temporal, lo ejecuta con subprocess con timeout, y captura la salida.
 8. El resultado sube por la cadena hasta el navegador, que muestra el feedback visual.
@@ -79,7 +79,7 @@ El navegador carga la interfaz desde el servidor FastAPI. Cuando el usuario inte
 - **Git + GitHub** — control de versiones y hosting del código.
 - **Render** — deploy en producción (plan free).
 
-### Por qué NO usamos npm
+### Por qué NO se usa npm
 
 Se tomó la decisión consciente de no usar el ecosistema npm para minimizar la superficie de ataque de supply chain attacks. En vez de eso, todas las librerías frontend (Tailwind, Monaco) se cargan desde CDN oficial en el navegador.
 
@@ -232,7 +232,7 @@ Ejemplos de formato de valores esperados:
 - Para listas: "[1, 2, 3]" (con espacios después de las comas).
 - Para diccionarios: "{'clave': 'valor'}".
 
-Si hay dudas del formato exacto, en un Python interactivo se hace print(repr(tu_resultado)) y ese es el string que va en esperado.
+Si hay dudas del formato exacto, en un Python interactivo se ejecuta print(repr(tu_resultado)) y ese es el string que va en esperado.
 
 ---
 
