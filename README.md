@@ -21,7 +21,15 @@
 
 ## 🎯 Demo
 
-_Próximamente: link al deploy en vivo_
+## 🎯 Demo en vivo
+
+👉 **[https://pylearn-cwtc.onrender.com/app](https://pylearn-cwtc.onrender.com/app)**
+
+> ⚠️ **Nota:** la app está hosteada en el plan gratuito de Render. Si es la primera visita en un rato, tarda ~40 segundos en cargar (el servidor se "despierta"). Después funciona normal.
+
+### Capturas de pantalla
+
+_Próximamente: capturas de la app en funcionamiento._
 
 ## 🛠️ Stack técnico
 
