@@ -46,12 +46,12 @@
     <!-- HEADER -->
     <header class="bg-white border-b-2 border-gray-100 sticky top-0 z-10">
         <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
+   <button onclick="volverAlInicio()" class="flex items-center gap-3 hover:opacity-70 transition-opacity">
                 <div class="w-10 h-10 bg-white border-2 border-gray-100 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
                     🐍
                 </div>
                 <h1 class="text-2xl font-black text-gray-800">PyLearn</h1>
-            </div>
+            </button>
             <div class="flex items-center gap-4">
                 <div class="flex items-center gap-2 bg-orange-100 px-4 py-2 rounded-2xl">
                     <span class="text-2xl">🔥</span>
@@ -174,8 +174,17 @@
                 </div>
             </div>
             
-            <!-- PANTALLA DE EJERCICIO -->
+   <!-- PANTALLA DE EJERCICIO -->
             <div id="pantalla-ejercicio" class="hidden space-y-6">
+                
+                <!-- Botón volver al inicio -->
+                <button
+                    onclick="volverAlInicio()"
+                    class="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-bold text-sm transition-colors"
+                >
+                    <span class="text-lg">←</span>
+                    <span>Volver al inicio</span>
+                </button>
                 
                 <div class="bg-white rounded-3xl p-8 border-2 border-gray-100">
                     <div class="flex items-center gap-3 mb-4" id="badges-container">
@@ -470,6 +479,19 @@
             const pendiente = ejercicios.find(ej => !ejerciciosCompletados.includes(ej.id));
             const primero = pendiente || ejercicios[0];
             if (primero) cargarEjercicio(primero.id);
+        }
+        function volverAlInicio() {
+            // Ocultar pantalla de ejercicio, mostrar bienvenida
+            document.getElementById('pantalla-ejercicio').classList.add('hidden');
+            document.getElementById('bienvenida').classList.remove('hidden');
+            document.getElementById('bienvenida').classList.add('fade-in');
+            
+            // Deseleccionar el ejercicio actual
+            ejercicioActual = null;
+            renderizarLista();
+            
+            // Scroll arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
         async function cargarEjercicio(id) {
