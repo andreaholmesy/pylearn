@@ -73,11 +73,13 @@
             color: #858585;
             text-align: right;
             user-select: none;
+            -webkit-user-select: none;
             min-width: 40px;
             white-space: pre;
             font-variant-numeric: tabular-nums;
             flex-shrink: 0;
-            z-index: 2;
+            z-index: 0;
+            pointer-events: none;
         }
         
         .editor-mobile-code-wrapper {
@@ -128,11 +130,20 @@
             overflow-y: hidden;
             width: 100%;
             z-index: 1;
+            /* Permite selección táctil en móvil */
+            -webkit-user-select: text;
+            user-select: text;
         }
         
         .editor-mobile-textarea::selection {
-            background: rgba(58, 116, 202, 0.5);
-            color: transparent;
+            background: rgba(58, 116, 202, 0.6);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Firefox */
+        .editor-mobile-textarea::-moz-selection {
+            background: rgba(58, 116, 202, 0.6);
+            color: rgba(255, 255, 255, 0.9);
         }
         
         .hljs { background: transparent !important; }
@@ -384,6 +395,47 @@
         let racha = parseInt(localStorage.getItem('racha') || '0');
         let ejerciciosCompletados = JSON.parse(localStorage.getItem('completados') || '[]');
         let lintTimeout = null;
+        let snapshotTimeout = null;
+        
+        // Historial manual para deshacer/rehacer en móvil
+        const historial = {
+            pila: [],       // snapshots guardados
+            posicion: -1,   // índice actual
+            MAX: 50,        // máximo de snapshots a guardar
+            
+            guardar(texto) {
+                // Si estamos en el medio del historial, descartar lo que había adelante
+                if (this.posicion < this.pila.length - 1) {
+                    this.pila = this.pila.slice(0, this.posicion + 1);
+                }
+                // No guardar si el texto es igual al último snapshot
+                if (this.pila.length > 0 && this.pila[this.posicion] === texto) return;
+                this.pila.push(texto);
+                if (this.pila.length > this.MAX) this.pila.shift();
+                this.posicion = this.pila.length - 1;
+            },
+            
+            deshacer() {
+                if (this.posicion > 0) {
+                    this.posicion--;
+                    return this.pila[this.posicion];
+                }
+                return null; // ya estamos al inicio
+            },
+            
+            rehacer() {
+                if (this.posicion < this.pila.length - 1) {
+                    this.posicion++;
+                    return this.pila[this.posicion];
+                }
+                return null; // ya estamos al final
+            },
+            
+            resetear(textoInicial) {
+                this.pila = [textoInicial];
+                this.posicion = 0;
+            }
+        };
         
         const ES_MOVIL = window.innerWidth < 1024;
         
@@ -465,15 +517,30 @@
                 if (!textarea) return;
                 textarea.focus();
                 if (accion === 'deshacer') {
-                    document.execCommand('undo');
+                    const texto = historial.deshacer();
+                    if (texto !== null) {
+                        textarea.value = texto;
+                        actualizarEditorMobile();
+                        if (lintTimeout) clearTimeout(lintTimeout);
+                        lintTimeout = setTimeout(analizarCodigo, 500);
+                    }
                 } else if (accion === 'rehacer') {
-                    document.execCommand('redo');
+                    const texto = historial.rehacer();
+                    if (texto !== null) {
+                        textarea.value = texto;
+                        actualizarEditorMobile();
+                        if (lintTimeout) clearTimeout(lintTimeout);
+                        lintTimeout = setTimeout(analizarCodigo, 500);
+                    }
                 } else if (accion === 'tab') {
                     const start = textarea.selectionStart;
                     const end = textarea.selectionEnd;
                     textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
                     textarea.selectionStart = textarea.selectionEnd = start + 4;
                     actualizarEditorMobile();
+                    // Guardar snapshot después del tab
+                    if (snapshotTimeout) clearTimeout(snapshotTimeout);
+                    snapshotTimeout = setTimeout(() => historial.guardar(textarea.value), 600);
                     if (lintTimeout) clearTimeout(lintTimeout);
                     lintTimeout = setTimeout(analizarCodigo, 500);
                 }
@@ -492,8 +559,18 @@
                 editorAPI._textarea = textarea;
                 editorAPI._highlight = document.getElementById('editor-mobile-highlight');
                 
+                // Sobreescribir setValue para resetear el historial al cargar ejercicio
+                const _setValueOriginal = editorAPI.setValue.bind(editorAPI);
+                editorAPI.setValue = function(text) {
+                    _setValueOriginal(text);
+                    historial.resetear(text);
+                };
+                
                 textarea.addEventListener('input', () => {
                     actualizarEditorMobile();
+                    // Guardar snapshot con debounce (600ms de pausa)
+                    if (snapshotTimeout) clearTimeout(snapshotTimeout);
+                    snapshotTimeout = setTimeout(() => historial.guardar(textarea.value), 600);
                     if (lintTimeout) clearTimeout(lintTimeout);
                     lintTimeout = setTimeout(analizarCodigo, 500);
                 });
