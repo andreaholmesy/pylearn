@@ -1,9 +1,10 @@
-[
+﻿[
   {
     "id": 1,
     "titulo": "Función es_par",
     "nivel": "facil",
     "enunciado": "Escribe una función llamada 'es_par' que reciba un número entero y devuelva True si es par, False si es impar.",
+    "teoria": "Una función en Python se define con 'def nombre(parametros):'. Para saber si un número es par, usa el operador módulo '%', que devuelve el resto de una división. Si n % 2 == 0, el número es par (no tiene resto al dividir entre 2). Para devolver un valor usa 'return'.\n\nEjemplo:\ndef doble(n):\n    return n * 2",
     "codigo_inicial": "def es_par(n):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "es_par(2)", "esperado": "True"},
@@ -17,6 +18,7 @@
     "titulo": "Suma de lista",
     "nivel": "facil",
     "enunciado": "Escribe una función 'sumar_lista' que reciba una lista de números y devuelva la suma de todos.",
+    "teoria": "Una lista en Python es una colección de elementos entre corchetes: [1, 2, 3]. Para recorrer todos los elementos de una lista, usa un bucle 'for':\n\nfor elemento in lista:\n    # hacer algo con elemento\n\nPuedes ir acumulando una suma con una variable que empieza en 0 y va sumando cada elemento.",
     "codigo_inicial": "def sumar_lista(numeros):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "sumar_lista([1, 2, 3])", "esperado": "6"},
@@ -30,6 +32,7 @@
     "titulo": "Cadena al revés",
     "nivel": "facil",
     "enunciado": "Escribe una función 'invertir' que reciba una cadena de texto y la devuelva al revés.",
+    "teoria": "Una cadena de texto (string) en Python es una secuencia de caracteres entre comillas: 'hola' o \"hola\". Puedes acceder a partes de una cadena con slicing:\n\ntexto[inicio:fin:paso]\n\nUn truco muy usado para invertir una cadena es usar el paso -1:\n\ntexto[::-1]\n\nEso significa: toma todos los caracteres, pero de atrás hacia adelante.",
     "codigo_inicial": "def invertir(texto):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "invertir('hola')", "esperado": "'aloh'"},
@@ -43,6 +46,7 @@
     "titulo": "Contar vocales",
     "nivel": "facil",
     "enunciado": "Escribe una función 'contar_vocales' que reciba una cadena y devuelva cuántas vocales tiene (a, e, i, o, u en minúscula o mayúscula).",
+    "teoria": "Para recorrer cada letra de un string puedes usar un bucle for:\n\nfor letra in texto:\n    # hacer algo con cada letra\n\nPuedes verificar si un elemento está dentro de otro con 'in':\n\nif letra in 'aeiou':\n    # es una vocal\n\nPara manejar mayúsculas y minúsculas a la vez, convierte el texto a minúsculas con .lower() antes de comparar.",
     "codigo_inicial": "def contar_vocales(texto):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "contar_vocales('hola')", "esperado": "2"},
@@ -57,6 +61,7 @@
     "titulo": "Máximo de una lista",
     "nivel": "facil",
     "enunciado": "Escribe una función 'maximo' que reciba una lista de números y devuelva el mayor. No uses la función max() de Python.",
+    "teoria": "La idea es recorrer la lista comparando cada elemento con el mayor encontrado hasta ese momento. Empieza asumiendo que el primero es el mayor (lista[0]), luego recorre el resto:\n\nmayor = lista[0]\nfor numero in lista:\n    if numero > mayor:\n        mayor = numero\n\nAl final, 'mayor' tendrá el valor más grande de toda la lista.",
     "codigo_inicial": "def maximo(numeros):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "maximo([1, 2, 3])", "esperado": "3"},
@@ -70,6 +75,7 @@
     "titulo": "FizzBuzz",
     "nivel": "medio",
     "enunciado": "Escribe una función 'fizzbuzz' que reciba un número n y devuelva una lista de strings del 1 al n, pero: si el número es múltiplo de 3 pon 'Fizz', si es múltiplo de 5 pon 'Buzz', si es múltiplo de ambos pon 'FizzBuzz', y si no es múltiplo de ninguno pon el número como string.",
+    "teoria": "Necesitas combinar varias condiciones. El orden importa: primero verificar si es múltiplo de ambos (3 y 5), luego de solo 3, luego de solo 5, y finalmente el caso por defecto.\n\nPara generar números del 1 al n usa range(1, n+1).\nPara convertir un número a string usa str(numero).\nEl operador % te da el resto: si numero % 3 == 0, es múltiplo de 3.",
     "codigo_inicial": "def fizzbuzz(n):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "fizzbuzz(5)", "esperado": "['1', '2', 'Fizz', '4', 'Buzz']"},
@@ -83,6 +89,7 @@
     "titulo": "Palíndromo",
     "nivel": "medio",
     "enunciado": "Escribe una función 'es_palindromo' que reciba una cadena y devuelva True si es un palíndromo (se lee igual de izquierda a derecha que de derecha a izquierda), ignorando mayúsculas y espacios.",
+    "teoria": "Un palíndromo es una palabra o frase que se lee igual al derecho y al revés: 'reconocer', 'anita lava la tina'.\n\nPara resolverlo:\n1. Convierte a minúsculas con .lower()\n2. Quita los espacios con .replace(' ', '')\n3. Compara el resultado con su versión al revés (texto[::-1])\n\nSi son iguales, es palíndromo.",
     "codigo_inicial": "def es_palindromo(texto):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "es_palindromo('anita lava la tina')", "esperado": "True"},
@@ -97,6 +104,7 @@
     "titulo": "Contador de palabras",
     "nivel": "medio",
     "enunciado": "Escribe una función 'contar_palabras' que reciba una cadena de texto y devuelva un diccionario donde las claves son las palabras y los valores son cuántas veces aparece cada una. Las palabras se separan por espacios.",
+    "teoria": "Un diccionario en Python almacena pares clave-valor entre llaves: {'hola': 1, 'mundo': 2}.\n\nPara separar un texto en palabras usa .split(), que divide por espacios:\n'hola mundo'.split() devuelve ['hola', 'mundo']\n\nPara contar ocurrencias, puedes verificar si la palabra ya está en el diccionario:\nif palabra in conteo:\n    conteo[palabra] += 1\nelse:\n    conteo[palabra] = 1\n\nO usar el método .get() con valor por defecto:\nconteo[palabra] = conteo.get(palabra, 0) + 1",
     "codigo_inicial": "def contar_palabras(texto):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "contar_palabras('hola mundo hola')", "esperado": "{'hola': 2, 'mundo': 1}"},
@@ -110,6 +118,7 @@
     "titulo": "Números primos hasta N",
     "nivel": "medio",
     "enunciado": "Escribe una función 'primos_hasta' que reciba un número n y devuelva una lista con todos los números primos desde 2 hasta n (inclusive). Un número primo solo es divisible por 1 y por sí mismo.",
+    "teoria": "Para saber si un número es primo, verifica que no sea divisible por ningún número entre 2 y él mismo (sin contarlo).\n\nTruco de eficiencia: solo necesitas verificar hasta la raíz cuadrada del número. Puedes usar range(2, n) para generar los divisores a probar.\n\nSi ningún número en ese rango divide exactamente al candidato (resto == 0), entonces es primo.\n\nUsa una función auxiliar 'es_primo(n)' dentro de la función principal para mantener el código limpio.",
     "codigo_inicial": "def primos_hasta(n):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "primos_hasta(10)", "esperado": "[2, 3, 5, 7]"},
@@ -123,6 +132,7 @@
     "titulo": "Ordenar por longitud",
     "nivel": "medio",
     "enunciado": "Escribe una función 'ordenar_por_longitud' que reciba una lista de strings y la devuelva ordenada de menor a mayor longitud. Si dos tienen la misma longitud, deben mantener el orden original.",
+    "teoria": "Python tiene una función sorted() que ordena listas. Acepta un parámetro 'key' que indica el criterio de ordenamiento:\n\nsorted(lista, key=criterio)\n\nPara ordenar por longitud de strings, el criterio es la función len:\n\nsorted(palabras, key=len)\n\nEsto le dice a Python: ordena esta lista, pero en vez de comparar los strings directamente, compara sus longitudes.\n\nEl ordenamiento en Python es estable, lo que garantiza que elementos iguales mantienen su orden original.",
     "codigo_inicial": "def ordenar_por_longitud(palabras):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "ordenar_por_longitud(['casa', 'a', 'perro'])", "esperado": "['a', 'casa', 'perro']"},
@@ -136,6 +146,7 @@
     "titulo": "Fibonacci",
     "nivel": "dificil",
     "enunciado": "Escribe una función 'fibonacci' que reciba un número n y devuelva una lista con los primeros n números de la sucesión de Fibonacci (0, 1, 1, 2, 3, 5, 8...). Cada número es la suma de los dos anteriores.",
+    "teoria": "La sucesión de Fibonacci empieza con 0 y 1, y cada número siguiente es la suma de los dos anteriores: 0, 1, 1, 2, 3, 5, 8, 13...\n\nEstrategia iterativa (recomendada):\n1. Maneja casos especiales: n=0 devuelve [], n=1 devuelve [0].\n2. Empieza con la lista [0, 1].\n3. En cada iteración, el siguiente número es la suma de los últimos dos: lista[-1] + lista[-2].\n4. Agrega ese número a la lista con .append().\n5. Repite hasta tener n elementos.",
     "codigo_inicial": "def fibonacci(n):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "fibonacci(1)", "esperado": "[0]"},
@@ -150,6 +161,7 @@
     "titulo": "Anagramas",
     "nivel": "dificil",
     "enunciado": "Escribe una función 'son_anagramas' que reciba dos cadenas y devuelva True si son anagramas (tienen exactamente las mismas letras, en cualquier orden), ignorando mayúsculas y espacios.",
+    "teoria": "Dos palabras son anagramas si tienen exactamente las mismas letras (misma cantidad de cada una), solo que en distinto orden. Ejemplo: 'roma' y 'amor'.\n\nEstrategia elegante:\n1. Convierte ambas a minúsculas con .lower().\n2. Quita los espacios con .replace(' ', '').\n3. Convierte cada una en una lista de letras y ordénalas con sorted().\n4. Compara: si las listas ordenadas son iguales, son anagramas.\n\nsorted('amor') da ['a', 'm', 'o', 'r']\nsorted('roma') da ['a', 'm', 'o', 'r'] — iguales!",
     "codigo_inicial": "def son_anagramas(a, b):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "son_anagramas('roma', 'amor')", "esperado": "True"},
@@ -164,6 +176,7 @@
     "titulo": "Aplanar lista",
     "nivel": "dificil",
     "enunciado": "Escribe una función 'aplanar' que reciba una lista que puede contener números o listas anidadas (de cualquier profundidad) y devuelva una lista plana con todos los números en el orden en que aparecen.",
+    "teoria": "Este ejercicio requiere recursión: una función que se llama a sí misma.\n\nLa idea: recorre la lista elemento por elemento. Si un elemento es una lista, llama a la misma función sobre ese elemento (recursión). Si es un número, agrégalo al resultado.\n\nPuedes verificar si algo es una lista con isinstance(elemento, list).\n\nEjemplo mental:\naplanar([1, [2, 3]]) procesa 1 (número, lo agrega), procesa [2,3] (es lista, llama a aplanar([2,3])) y devuelve [1, 2, 3].",
     "codigo_inicial": "def aplanar(lista):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "aplanar([1, 2, 3])", "esperado": "[1, 2, 3]"},
@@ -178,6 +191,7 @@
     "titulo": "Balancear paréntesis",
     "nivel": "dificil",
     "enunciado": "Escribe una función 'balanceado' que reciba una cadena con paréntesis, corchetes y llaves, y devuelva True si están bien balanceados (cada apertura tiene su cierre correspondiente en el orden correcto). Ejemplo: '({[]})' es válido, '([)]' no lo es.",
+    "teoria": "Este ejercicio se resuelve con una estructura llamada 'pila' (stack), que funciona como una pila de platos: el último que entra es el primero en salir.\n\nEn Python, una lista puede funcionar como pila usando .append() para agregar y .pop() para sacar el último.\n\nAlgoritmo:\n1. Crea una pila vacía.\n2. Para cada caracter: si es apertura ( [ { agrégalo a la pila.\n3. Si es cierre ) ] }: verifica que el último de la pila sea su pareja de apertura. Si no, no está balanceado.\n4. Al final, la pila debe estar vacía (todo se cerró).\n\nUsa un diccionario para mapear cierres a aperturas: {')': '(', ']': '[', '}': '{'}",
     "codigo_inicial": "def balanceado(cadena):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "balanceado('()')", "esperado": "True"},
@@ -193,6 +207,7 @@
     "titulo": "Números romanos",
     "nivel": "dificil",
     "enunciado": "Escribe una función 'a_romano' que reciba un número entero entre 1 y 3999 y devuelva su representación en números romanos. Símbolos: I=1, V=5, X=10, L=50, C=100, D=500, M=1000. Recuerda que 4=IV, 9=IX, 40=XL, 90=XC, 400=CD, 900=CM.",
+    "teoria": "La clave es tener una lista de pares (valor, símbolo) ordenada de mayor a menor, incluyendo los casos especiales de sustracción:\n\nvalores = [\n    (1000, 'M'), (900, 'CM'), (500, 'D'), (400, 'CD'),\n    (100, 'C'), (90, 'XC'), (50, 'L'), (40, 'XL'),\n    (10, 'X'), (9, 'IX'), (5, 'V'), (4, 'IV'), (1, 'I')\n]\n\nAlgoritmo: mientras n > 0, encuentra el valor más grande que quepa en n, agrega su símbolo al resultado, y réstalo de n. Repite.\n\nEjemplo: 14 da X (resta 10), luego IV (resta 4), resultado: XIV",
     "codigo_inicial": "def a_romano(n):\n    # Tu código aquí\n    pass\n",
     "tests": [
       {"entrada": "a_romano(1)", "esperado": "'I'"},

@@ -87,13 +87,9 @@
             overflow: hidden;
         }
         
-        /* El code resaltado se ve, el textarea está encima transparente */
         .editor-mobile-highlight {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             padding: 16px 16px 16px 8px;
             margin: 0;
             font-family: inherit;
@@ -115,10 +111,7 @@
         
         .editor-mobile-textarea {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: transparent;
             color: transparent;
             caret-color: white;
@@ -137,13 +130,11 @@
             z-index: 1;
         }
         
-        /* Selección visible aunque el texto sea transparente */
         .editor-mobile-textarea::selection {
             background: rgba(58, 116, 202, 0.5);
             color: transparent;
         }
         
-        /* Tema hljs vs2015 override para consistencia */
         .hljs { background: transparent !important; }
     </style>
 </head>
@@ -184,11 +175,7 @@
         </div>
     </header>
     
-    <div 
-        id="sidebar-overlay" 
-        onclick="toggleSidebar()" 
-        class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden"
-    ></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden"></div>
     
     <main class="max-w-6xl mx-auto px-4 md:px-6 py-4 md:py-8 lg:grid lg:grid-cols-[300px_1fr] lg:gap-6">
         
@@ -197,14 +184,8 @@
             class="hidden lg:block fixed lg:static inset-y-0 left-0 w-[280px] lg:w-auto bg-white lg:rounded-3xl p-6 border-r-2 lg:border-2 border-gray-100 z-50 lg:z-auto overflow-y-auto lg:h-fit lg:sticky lg:top-24"
         >
             <div class="flex items-center justify-between mb-4">
-                <h2 class="font-black text-lg text-gray-800 flex items-center gap-2">
-                    📚 Ejercicios
-                </h2>
-                <button 
-                    onclick="toggleSidebar()"
-                    class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100"
-                    aria-label="Cerrar menú"
-                >
+                <h2 class="font-black text-lg text-gray-800 flex items-center gap-2">📚 Ejercicios</h2>
+                <button onclick="toggleSidebar()" class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100" aria-label="Cerrar menú">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -218,15 +199,12 @@
         
         <section class="space-y-4 md:space-y-6">
             
+            <!-- PANTALLA DE BIENVENIDA -->
             <div id="bienvenida" class="fade-in space-y-4 md:space-y-6">
                 
                 <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-6 md:p-12 text-white">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center text-4xl md:text-5xl mb-4 md:mb-6 shadow-lg">
-                        🐍
-                    </div>
-                    <h1 class="text-2xl md:text-5xl font-black mb-3 md:mb-4 leading-tight">
-                        Aprende Python jugando
-                    </h1>
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center text-4xl md:text-5xl mb-4 md:mb-6 shadow-lg">🐍</div>
+                    <h1 class="text-2xl md:text-5xl font-black mb-3 md:mb-4 leading-tight">Aprende Python jugando</h1>
                     <p class="text-base md:text-xl text-green-50 leading-relaxed max-w-2xl">
                         Practica programación con <strong>15 ejercicios</strong> de dificultad creciente, corrección automática y feedback inmediato. Cada ejercicio te da XP y sube tu racha, como en Duolingo.
                     </p>
@@ -238,13 +216,11 @@
                         <h3 class="font-black text-gray-800 mb-2">1. Lee el enunciado</h3>
                         <p class="text-sm text-gray-600 leading-relaxed">Cada ejercicio te dice qué función tienes que escribir y qué debe hacer.</p>
                     </div>
-                    
                     <div class="bg-white rounded-2xl md:rounded-3xl p-5 md:p-6 border-2 border-gray-100">
                         <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl mb-3">✏️</div>
                         <h3 class="font-black text-gray-800 mb-2">2. Escribe tu código</h3>
                         <p class="text-sm text-gray-600 leading-relaxed">Usa el editor con resaltado de sintaxis. Puedes probar todas las veces que quieras.</p>
                     </div>
-                    
                     <div class="bg-white rounded-2xl md:rounded-3xl p-5 md:p-6 border-2 border-gray-100">
                         <div class="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center text-2xl mb-3">✅</div>
                         <h3 class="font-black text-gray-800 mb-2">3. Recibe feedback</h3>
@@ -254,7 +230,6 @@
                 
                 <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 border-2 border-gray-100 text-center">
                     <h2 class="text-xl md:text-2xl font-black text-gray-800 mb-4 md:mb-6">¿Lista para empezar?</h2>
-                    
                     <div class="grid grid-cols-3 gap-4 max-w-md mx-auto mb-6">
                         <div>
                             <div class="text-2xl md:text-3xl font-black text-green-500">15</div>
@@ -269,24 +244,17 @@
                             <div class="text-xs text-gray-500 uppercase tracking-wide font-bold">XP máx</div>
                         </div>
                     </div>
-                    
-                    <button
-                        onclick="empezarPrimerEjercicio()"
-                        class="btn-duo bg-green-500 hover:bg-green-600 text-white font-black text-base md:text-lg uppercase tracking-wide py-4 px-8 md:px-12 rounded-2xl w-full md:w-auto"
-                    >
+                    <button onclick="empezarPrimerEjercicio()" class="btn-duo bg-green-500 hover:bg-green-600 text-white font-black text-base md:text-lg uppercase tracking-wide py-4 px-8 md:px-12 rounded-2xl w-full md:w-auto">
                         Empezar 🚀
                     </button>
-                    
                     <p class="text-xs text-gray-400 mt-4">No necesitas registrarte. Tu progreso se guarda en este navegador.</p>
                 </div>
             </div>
             
+            <!-- PANTALLA DE EJERCICIO -->
             <div id="pantalla-ejercicio" class="hidden space-y-4 md:space-y-6">
                 
-                <button
-                    onclick="volverAlInicio()"
-                    class="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-bold text-sm transition-colors py-2"
-                >
+                <button onclick="volverAlInicio()" class="flex items-center gap-2 text-gray-600 hover:text-gray-800 font-bold text-sm transition-colors py-2">
                     <span class="text-lg">←</span>
                     <span>Volver al inicio</span>
                 </button>
@@ -298,38 +266,85 @@
                     <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-3 md:mb-4" id="ejercicio-titulo">
                         Elige un ejercicio para empezar
                     </h2>
-                    <p class="text-base md:text-lg text-gray-600 leading-relaxed" id="ejercicio-enunciado">
+                    <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-4" id="ejercicio-enunciado">
                         Selecciona un ejercicio de la barra lateral izquierda.
                     </p>
+                    
+                    <!-- Botón y panel de teoría -->
+                    <div id="teoria-container" class="hidden">
+                        <button onclick="toggleTeoria()" id="btn-teoria" class="flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors">
+                            <span>💡</span>
+                            <span id="btn-teoria-texto">Ver pista teórica</span>
+                            <span id="btn-teoria-arrow" class="transition-transform">▼</span>
+                        </button>
+                        <div id="teoria-panel" class="hidden mt-3 bg-blue-50 border-2 border-blue-100 rounded-2xl p-4">
+                            <pre id="teoria-texto" class="text-sm text-blue-900 leading-relaxed whitespace-pre-wrap font-sans"></pre>
+                        </div>
+                    </div>
                 </div>
                 
+                <!-- Editor de código -->
                 <div class="bg-white rounded-2xl md:rounded-3xl border-2 border-gray-100 overflow-hidden">
-                    <div class="bg-gray-800 px-4 md:px-6 py-3 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
+                    
+                    <!-- Barra del editor con botones deshacer/rehacer (desktop y móvil) -->
+                    <div class="bg-gray-800 px-4 md:px-6 py-3 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2 flex-shrink-0">
                             <div class="w-3 h-3 rounded-full bg-red-400"></div>
                             <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
                             <div class="w-3 h-3 rounded-full bg-green-400"></div>
                             <span class="text-gray-300 text-sm ml-3 font-mono hidden sm:inline">solucion.py</span>
                         </div>
-                        <div id="editor-status" class="text-xs font-bold"></div>
+                        
+                        <!-- Botones de acción -->
+                        <div class="flex items-center gap-2">
+                            <button
+                                onclick="accionEditor('deshacer')"
+                                class="flex items-center gap-1 px-2.5 py-1 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white text-xs font-bold rounded-lg transition-colors"
+                                title="Deshacer (Ctrl+Z)"
+                            >
+                                ↩ Deshacer
+                            </button>
+                            <button
+                                onclick="accionEditor('rehacer')"
+                                class="flex items-center gap-1 px-2.5 py-1 bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white text-xs font-bold rounded-lg transition-colors"
+                                title="Rehacer (Ctrl+Y)"
+                            >
+                                ↪ Rehacer
+                            </button>
+                        </div>
+                        
+                        <div id="editor-status" class="text-xs font-bold flex-shrink-0"></div>
                     </div>
                     
                     <!-- Editor Monaco (desktop) -->
                     <div id="editor-monaco" style="height: 320px;"></div>
                     
                     <!-- Editor Mobile con resaltado de sintaxis -->
-                    <div id="editor-mobile-container" class="editor-mobile-wrapper hidden">
-                        <div id="editor-mobile-lines" class="editor-mobile-lines">1</div>
-                        <div class="editor-mobile-code-wrapper">
-                            <pre class="editor-mobile-highlight"><code id="editor-mobile-highlight" class="language-python hljs"></code></pre>
-                            <textarea 
-                                id="editor-mobile-textarea"
-                                class="editor-mobile-textarea"
-                                spellcheck="false"
-                                autocorrect="off"
-                                autocapitalize="off"
-                                autocomplete="off"
-                            ></textarea>
+                    <div id="editor-mobile-container" class="hidden">
+                        <!-- Barra táctil extra para móvil (Tab) -->
+                        <div class="flex items-center gap-2 px-3 py-2 bg-gray-700 border-b border-gray-600">
+                            <span class="text-xs text-gray-400 font-bold">Atajos:</span>
+                            <button
+                                onclick="accionEditor('tab')"
+                                class="flex items-center gap-1 px-3 py-1.5 bg-gray-600 hover:bg-gray-500 text-white text-xs font-bold rounded-lg transition-colors"
+                                title="Insertar indentación"
+                            >
+                                ⇥ Tab (4 espacios)
+                            </button>
+                        </div>
+                        <div class="editor-mobile-wrapper">
+                            <div id="editor-mobile-lines" class="editor-mobile-lines">1</div>
+                            <div class="editor-mobile-code-wrapper">
+                                <pre class="editor-mobile-highlight"><code id="editor-mobile-highlight" class="language-python hljs"></code></pre>
+                                <textarea 
+                                    id="editor-mobile-textarea"
+                                    class="editor-mobile-textarea"
+                                    spellcheck="false"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    autocomplete="off"
+                                ></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -411,7 +426,6 @@
             const linesDiv = document.getElementById('editor-mobile-lines');
             if (!textarea || !highlight || !linesDiv) return;
             
-            // Actualizar highlight
             const code = textarea.value;
             highlight.textContent = code;
             if (window.hljs) {
@@ -419,20 +433,51 @@
                 hljs.highlightElement(highlight);
             }
             
-            // Actualizar números de línea
             const numLineas = (code.match(/\n/g) || []).length + 1;
             const lineas = [];
             for (let i = 1; i <= numLineas; i++) lineas.push(i);
             linesDiv.textContent = lineas.join('\n');
             
-            // Ajustar altura
             textarea.style.height = 'auto';
             const nuevaAltura = Math.max(288, textarea.scrollHeight);
             textarea.style.height = nuevaAltura + 'px';
             
-            // Sincronizar scroll horizontal entre textarea y highlight
             const preElement = highlight.parentElement;
             preElement.scrollLeft = textarea.scrollLeft;
+        }
+        
+        // ==========================================================================
+        // ACCIÓN EDITOR (deshacer, rehacer, tab)
+        // ==========================================================================
+        function accionEditor(accion) {
+            if (!ES_MOVIL && editorAPI._monaco) {
+                const monaco_editor = editorAPI._monaco;
+                monaco_editor.focus();
+                if (accion === 'deshacer') {
+                    monaco_editor.trigger('keyboard', 'undo', null);
+                } else if (accion === 'rehacer') {
+                    monaco_editor.trigger('keyboard', 'redo', null);
+                } else if (accion === 'tab') {
+                    monaco_editor.trigger('keyboard', 'tab', null);
+                }
+            } else {
+                const textarea = document.getElementById('editor-mobile-textarea');
+                if (!textarea) return;
+                textarea.focus();
+                if (accion === 'deshacer') {
+                    document.execCommand('undo');
+                } else if (accion === 'rehacer') {
+                    document.execCommand('redo');
+                } else if (accion === 'tab') {
+                    const start = textarea.selectionStart;
+                    const end = textarea.selectionEnd;
+                    textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
+                    textarea.selectionStart = textarea.selectionEnd = start + 4;
+                    actualizarEditorMobile();
+                    if (lintTimeout) clearTimeout(lintTimeout);
+                    lintTimeout = setTimeout(analizarCodigo, 500);
+                }
+            }
         }
         
         // ==========================================================================
@@ -508,7 +553,6 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            
             if (sidebar.classList.contains('hidden')) {
                 sidebar.classList.remove('hidden');
                 sidebar.classList.add('slide-in');
@@ -523,11 +567,45 @@
         }
         
         // ==========================================================================
+        // TEORÍA
+        // ==========================================================================
+        function toggleTeoria() {
+            const panel = document.getElementById('teoria-panel');
+            const arrow = document.getElementById('btn-teoria-arrow');
+            const texto = document.getElementById('btn-teoria-texto');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+                texto.textContent = 'Ocultar pista teórica';
+            } else {
+                panel.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+                texto.textContent = 'Ver pista teórica';
+            }
+        }
+        
+        function mostrarTeoria(teoria) {
+            const container = document.getElementById('teoria-container');
+            const textoEl = document.getElementById('teoria-texto');
+            const panel = document.getElementById('teoria-panel');
+            const arrow = document.getElementById('btn-teoria-arrow');
+            const btnTexto = document.getElementById('btn-teoria-texto');
+            if (teoria && teoria.trim()) {
+                container.classList.remove('hidden');
+                textoEl.textContent = teoria;
+            } else {
+                container.classList.add('hidden');
+            }
+            panel.classList.add('hidden');
+            arrow.style.transform = 'rotate(0deg)';
+            btnTexto.textContent = 'Ver pista teórica';
+        }
+        
+        // ==========================================================================
         // LINTER
         // ==========================================================================
         function analizarCodigo() {
             if (!ejercicioActual) return;
-            
             const codigo = editorAPI.getValue();
             const lineas = codigo.split('\n');
             const errores = [];
@@ -540,47 +618,24 @@
                 const indentacion = linea.match(/^[\t ]*/)[0];
                 if (indentacion.includes('\t') && indentacion.includes(' ')) {
                     errores.push({ linea: numLinea, mensaje: `Línea ${numLinea}: mezclas tabs y espacios en la indentación. Usa solo espacios.` });
-                    if (!ES_MOVIL) {
-                        markers.push({
-                            severity: monaco.MarkerSeverity.Error,
-                            message: 'Indentación mixta.',
-                            startLineNumber: numLinea, startColumn: 1,
-                            endLineNumber: numLinea, endColumn: indentacion.length + 1
-                        });
-                    }
+                    if (!ES_MOVIL) markers.push({ severity: monaco.MarkerSeverity.Error, message: 'Indentación mixta.', startLineNumber: numLinea, startColumn: 1, endLineNumber: numLinea, endColumn: indentacion.length + 1 });
                 }
                 
                 const espacios = linea.match(/^ */)[0].length;
                 if (espacios > 0 && espacios % 4 !== 0 && !indentacion.includes('\t')) {
                     errores.push({ linea: numLinea, mensaje: `Línea ${numLinea}: la indentación tiene ${espacios} espacios (debería ser múltiplo de 4).` });
-                    if (!ES_MOVIL) {
-                        markers.push({
-                            severity: monaco.MarkerSeverity.Warning,
-                            message: `Indentación de ${espacios} espacios.`,
-                            startLineNumber: numLinea, startColumn: 1,
-                            endLineNumber: numLinea, endColumn: espacios + 1
-                        });
-                    }
+                    if (!ES_MOVIL) markers.push({ severity: monaco.MarkerSeverity.Warning, message: `Indentación de ${espacios} espacios.`, startLineNumber: numLinea, startColumn: 1, endLineNumber: numLinea, endColumn: espacios + 1 });
                 }
                 
                 const trimmed = linea.trim();
                 const patrones = [/^def\s+\w+\s*\([^)]*\)\s*$/, /^if\s+.+[^:]$/, /^for\s+.+[^:]$/, /^while\s+.+[^:]$/, /^else\s*$/, /^elif\s+.+[^:]$/];
                 if (patrones.some(p => p.test(trimmed))) {
                     errores.push({ linea: numLinea, mensaje: `Línea ${numLinea}: falta el ":" al final.` });
-                    if (!ES_MOVIL) {
-                        markers.push({
-                            severity: monaco.MarkerSeverity.Error,
-                            message: 'Falta ":" al final.',
-                            startLineNumber: numLinea, startColumn: linea.length,
-                            endLineNumber: numLinea, endColumn: linea.length + 1
-                        });
-                    }
+                    if (!ES_MOVIL) markers.push({ severity: monaco.MarkerSeverity.Error, message: 'Falta ":" al final.', startLineNumber: numLinea, startColumn: linea.length, endLineNumber: numLinea, endColumn: linea.length + 1 });
                 }
             });
             
-            if (!ES_MOVIL && editorAPI._monaco) {
-                monaco.editor.setModelMarkers(editorAPI._monaco.getModel(), 'linter', markers);
-            }
+            if (!ES_MOVIL && editorAPI._monaco) monaco.editor.setModelMarkers(editorAPI._monaco.getModel(), 'linter', markers);
             mostrarErroresLinter(errores);
         }
         
@@ -589,7 +644,6 @@
             const lista = document.getElementById('linter-lista');
             const status = document.getElementById('editor-status');
             const btn = document.getElementById('btn-enviar');
-            
             if (errores.length === 0) {
                 cont.classList.add('hidden');
                 status.innerHTML = '<span class="text-green-400">✓ Sin errores</span>';
@@ -598,9 +652,7 @@
             } else {
                 cont.classList.remove('hidden');
                 lista.innerHTML = errores.slice(0, 5).map(e => `<li>• ${e.mensaje}</li>`).join('');
-                if (errores.length > 5) {
-                    lista.innerHTML += `<li class="text-amber-600 font-bold">...y ${errores.length - 5} más</li>`;
-                }
+                if (errores.length > 5) lista.innerHTML += `<li class="text-amber-600 font-bold">...y ${errores.length - 5} más</li>`;
                 status.innerHTML = `<span class="text-amber-400">⚠ ${errores.length}</span>`;
                 btn.classList.remove('bg-green-500', 'hover:bg-green-600');
                 btn.classList.add('bg-amber-500', 'hover:bg-amber-600');
@@ -617,8 +669,7 @@
                 renderizarLista();
                 actualizarProgresoGlobal();
             } catch (e) {
-                document.getElementById('lista-ejercicios').innerHTML = 
-                    '<div class="text-red-500 text-sm">Error al cargar. ¿Está corriendo la API?</div>';
+                document.getElementById('lista-ejercicios').innerHTML = '<div class="text-red-500 text-sm">Error al cargar. ¿Está corriendo la API?</div>';
             }
         }
         
@@ -629,48 +680,17 @@
                 const nivel = ej.nivel || 'facil';
                 if (grupos[nivel]) grupos[nivel].push(ej);
             });
-            
             let html = '';
             for (const [nivel, lista] of Object.entries(grupos)) {
                 if (lista.length === 0) continue;
                 const config = NIVELES[nivel];
                 const completadosEnNivel = lista.filter(ej => ejerciciosCompletados.includes(ej.id)).length;
-                
-                html += `
-                    <div>
-                        <div class="flex items-center justify-between mb-2 px-1">
-                            <div class="flex items-center gap-2">
-                                <span class="text-lg">${config.emoji}</span>
-                                <span class="font-black text-sm text-gray-700 uppercase tracking-wider">${config.label}</span>
-                            </div>
-                            <span class="text-xs font-bold text-gray-400">${completadosEnNivel}/${lista.length}</span>
-                        </div>
-                        <div class="space-y-2">
-                `;
-                
+                html += `<div><div class="flex items-center justify-between mb-2 px-1"><div class="flex items-center gap-2"><span class="text-lg">${config.emoji}</span><span class="font-black text-sm text-gray-700 uppercase tracking-wider">${config.label}</span></div><span class="text-xs font-bold text-gray-400">${completadosEnNivel}/${lista.length}</span></div><div class="space-y-2">`;
                 lista.forEach(ej => {
                     const completado = ejerciciosCompletados.includes(ej.id);
                     const activo = ejercicioActual && ejercicioActual.id === ej.id;
-                    const borderClass = activo
-                        ? `border-${config.color}-400 bg-${config.color}-50`
-                        : completado
-                            ? 'border-gray-200 bg-gray-50'
-                            : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50';
-                    
-                    html += `
-                        <button
-                            onclick="cargarEjercicio(${ej.id})"
-                            class="w-full text-left px-4 py-3 rounded-2xl border-2 transition-all ${borderClass}"
-                        >
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-bold text-gray-800 text-sm truncate">${ej.titulo}</div>
-                                    <div class="text-xs text-gray-500 mt-1">${ej.cantidad_tests} tests</div>
-                                </div>
-                                ${completado ? '<span class="text-xl ml-2">⭐</span>' : ''}
-                            </div>
-                        </button>
-                    `;
+                    const borderClass = activo ? `border-${config.color}-400 bg-${config.color}-50` : completado ? 'border-gray-200 bg-gray-50' : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50';
+                    html += `<button onclick="cargarEjercicio(${ej.id})" class="w-full text-left px-4 py-3 rounded-2xl border-2 transition-all ${borderClass}"><div class="flex items-center justify-between"><div class="flex-1 min-w-0"><div class="font-bold text-gray-800 text-sm truncate">${ej.titulo}</div><div class="text-xs text-gray-500 mt-1">${ej.cantidad_tests} tests</div></div>${completado ? '<span class="text-xl ml-2">⭐</span>' : ''}</div></button>`;
                 });
                 html += '</div></div>';
             }
@@ -681,15 +701,7 @@
             const total = ejercicios.length;
             const hechos = ejerciciosCompletados.length;
             const porc = total > 0 ? Math.round((hechos / total) * 100) : 0;
-            document.getElementById('progreso-global').innerHTML = `
-                <div class="flex items-center justify-between mb-2">
-                    <span class="font-bold text-gray-700">Progreso total</span>
-                    <span class="text-gray-500">${hechos}/${total}</span>
-                </div>
-                <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-green-500 transition-all" style="width: ${porc}%"></div>
-                </div>
-            `;
+            document.getElementById('progreso-global').innerHTML = `<div class="flex items-center justify-between mb-2"><span class="font-bold text-gray-700">Progreso total</span><span class="text-gray-500">${hechos}/${total}</span></div><div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-green-500 transition-all" style="width: ${porc}%"></div></div>`;
         }
         
         function empezarPrimerEjercicio() {
@@ -705,51 +717,39 @@
             ejercicioActual = null;
             renderizarLista();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
             const sidebar = document.getElementById('sidebar');
-            if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) {
-                toggleSidebar();
-            }
+            if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) toggleSidebar();
         }
         
         async function cargarEjercicio(id) {
             try {
                 const res = await fetch(`${API_BASE}/ejercicios/${id}`);
                 ejercicioActual = await res.json();
-                
                 const nivel = ejercicioActual.nivel || 'facil';
                 const config = NIVELES[nivel];
                 
                 document.getElementById('badges-container').innerHTML = `
-                    <span class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide bg-${config.color}-100 text-${config.color}-700">
-                        ${config.emoji} ${config.label}
-                    </span>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wide">
-                        +${config.xp} XP
-                    </span>
+                    <span class="text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide bg-${config.color}-100 text-${config.color}-700">${config.emoji} ${config.label}</span>
+                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wide">+${config.xp} XP</span>
                 `;
-                
                 document.getElementById('ejercicio-titulo').textContent = ejercicioActual.titulo;
                 document.getElementById('ejercicio-enunciado').textContent = ejercicioActual.enunciado;
+                mostrarTeoria(ejercicioActual.teoria || '');
                 editorAPI.setValue(ejercicioActual.codigo_inicial);
                 
                 document.getElementById('btn-enviar').disabled = false;
                 document.getElementById('resultados').classList.add('hidden');
                 document.getElementById('linter-warning').classList.add('hidden');
-                
                 document.getElementById('bienvenida').classList.add('hidden');
                 document.getElementById('pantalla-ejercicio').classList.remove('hidden');
                 document.getElementById('pantalla-ejercicio').classList.add('fade-in');
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                
                 renderizarLista();
                 analizarCodigo();
                 
                 const sidebar = document.getElementById('sidebar');
-                if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) {
-                    toggleSidebar();
-                }
+                if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) toggleSidebar();
             } catch (e) {
                 alert('Error al cargar el ejercicio');
             }
@@ -760,15 +760,11 @@
             const btn = document.getElementById('btn-enviar');
             btn.disabled = true;
             btn.textContent = 'Corrigiendo...';
-            
             try {
                 const res = await fetch(`${API_BASE}/corregir`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        codigo: editorAPI.getValue(),
-                        ejercicio_id: ejercicioActual.id
-                    })
+                    body: JSON.stringify({ codigo: editorAPI.getValue(), ejercicio_id: ejercicioActual.id })
                 });
                 const resultado = await res.json();
                 mostrarResultado(resultado);
@@ -783,11 +779,9 @@
         function mostrarResultado(r) {
             const cont = document.getElementById('resultados');
             cont.classList.remove('hidden', 'shake');
-            
             const porcentaje = Math.round((r.tests_pasados / r.tests_totales) * 100);
             const nivel = ejercicioActual.nivel || 'facil';
             const xpGanada = NIVELES[nivel].xp;
-            
             let html = '';
             
             if (r.todo_ok) {
@@ -802,66 +796,24 @@
                     renderizarLista();
                     actualizarProgresoGlobal();
                 }
-                
-                html = `
-                    <div class="text-center py-4">
-                        <div class="text-5xl md:text-6xl mb-3">🎉</div>
-                        <h3 class="text-xl md:text-2xl font-black text-green-600 mb-2">¡Perfecto!</h3>
-                        <p class="text-gray-600 mb-4">Pasaste los ${r.tests_totales} tests</p>
-                        <div class="inline-block bg-yellow-100 px-4 py-2 rounded-full font-bold text-yellow-700">
-                            +${xpGanada} XP
-                        </div>
-                    </div>
-                `;
+                html = `<div class="text-center py-4"><div class="text-5xl md:text-6xl mb-3">🎉</div><h3 class="text-xl md:text-2xl font-black text-green-600 mb-2">¡Perfecto!</h3><p class="text-gray-600 mb-4">Pasaste los ${r.tests_totales} tests</p><div class="inline-block bg-yellow-100 px-4 py-2 rounded-full font-bold text-yellow-700">+${xpGanada} XP</div></div>`;
             } else {
                 cont.classList.add('shake');
                 racha = 0;
                 localStorage.setItem('racha', racha);
                 actualizarStats();
-                
-                html = `
-                    <div class="mb-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="text-lg md:text-xl font-black text-gray-800">Casi lo tienes</h3>
-                            <span class="font-bold text-gray-600">${r.tests_pasados}/${r.tests_totales}</span>
-                        </div>
-                        <div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-green-500 rounded-full transition-all" style="width: ${porcentaje}%"></div>
-                        </div>
-                    </div>
-                `;
+                html = `<div class="mb-6"><div class="flex items-center justify-between mb-2"><h3 class="text-lg md:text-xl font-black text-gray-800">Casi lo tienes</h3><span class="font-bold text-gray-600">${r.tests_pasados}/${r.tests_totales}</span></div><div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden"><div class="h-full bg-green-500 rounded-full transition-all" style="width: ${porcentaje}%"></div></div></div>`;
             }
             
             html += '<div class="space-y-3 mt-4">';
             r.detalles.forEach((det, i) => {
                 if (det.paso) {
-                    html += `
-                        <div class="flex items-start gap-3 p-3 md:p-4 bg-green-50 border-2 border-green-200 rounded-2xl">
-                            <span class="text-2xl flex-shrink-0">✅</span>
-                            <div class="flex-1 min-w-0">
-                                <div class="font-bold text-green-800 text-sm">Test ${i+1}</div>
-                                <code class="text-xs text-gray-700 font-mono break-all">${det.entrada}</code>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="flex items-start gap-3 p-3 md:p-4 bg-green-50 border-2 border-green-200 rounded-2xl"><span class="text-2xl flex-shrink-0">✅</span><div class="flex-1 min-w-0"><div class="font-bold text-green-800 text-sm">Test ${i+1}</div><code class="text-xs text-gray-700 font-mono break-all">${det.entrada}</code></div></div>`;
                 } else {
-                    html += `
-                        <div class="flex items-start gap-3 p-3 md:p-4 bg-red-50 border-2 border-red-200 rounded-2xl">
-                            <span class="text-2xl flex-shrink-0">❌</span>
-                            <div class="flex-1 min-w-0">
-                                <div class="font-bold text-red-800 text-sm mb-1">Test ${i+1}</div>
-                                <code class="text-xs text-gray-700 font-mono block mb-2 break-all">${det.entrada}</code>
-                                <div class="text-xs text-gray-600 break-all">
-                                    <span class="font-bold">Esperado:</span> <code>${det.esperado}</code><br>
-                                    <span class="font-bold">Obtenido:</span> <code>${det.obtenido}</code>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    html += `<div class="flex items-start gap-3 p-3 md:p-4 bg-red-50 border-2 border-red-200 rounded-2xl"><span class="text-2xl flex-shrink-0">❌</span><div class="flex-1 min-w-0"><div class="font-bold text-red-800 text-sm mb-1">Test ${i+1}</div><code class="text-xs text-gray-700 font-mono block mb-2 break-all">${det.entrada}</code><div class="text-xs text-gray-600 break-all"><span class="font-bold">Esperado:</span> <code>${det.esperado}</code><br><span class="font-bold">Obtenido:</span> <code>${det.obtenido}</code></div></div></div>`;
                 }
             });
             html += '</div>';
-            
             cont.innerHTML = html;
             cont.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }

@@ -75,10 +75,10 @@ def obtener_ejercicio_detalle(ejercicio_id: int):
         "titulo": ejercicio["titulo"],
         "nivel": ejercicio.get("nivel", "facil"),
         "enunciado": ejercicio["enunciado"],
+        "teoria": ejercicio.get("teoria", ""),
         "codigo_inicial": ejercicio["codigo_inicial"],
         "tests_visibles": ejercicio["tests"]
     }
-
 
 @app.post("/corregir")
 def corregir_solucion(datos: SolucionRequest):

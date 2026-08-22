@@ -4,7 +4,7 @@ from motor import ejecutar_codigo
 
 def cargar_ejercicios(archivo="ejercicios.json"):
     """Lee el archivo JSON y devuelve la lista de ejercicios."""
-    with open(archivo, encoding='utf-8') as f:
+    with open(archivo, encoding='utf-8-sig') as f:
         return json.load(f)
 
 
