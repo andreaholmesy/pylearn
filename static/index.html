@@ -322,6 +322,13 @@
                             >
                                 ↪ Rehacer
                             </button>
+                            <button
+                                onclick="accionEditor('reiniciar')"
+                                class="flex items-center gap-1 px-2.5 py-1 bg-gray-700 hover:bg-red-700 text-gray-400 hover:text-white text-xs font-bold rounded-lg transition-colors"
+                                title="Volver al código inicial"
+                            >
+                                ↺ Reiniciar
+                            </button>
                         </div>
                         
                         <div id="editor-status" class="text-xs font-bold flex-shrink-0"></div>
@@ -386,6 +393,28 @@
         </section>
     </main>
     
+    <!-- Toast de notificación -->
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-2xl text-white text-sm font-bold shadow-lg transition-all">
+        <span id="toast-mensaje"></span>
+    </div>
+
+    <!-- Modal de confirmación -->
+    <div id="modal-confirmacion" class="hidden fixed inset-0 z-50 flex items-center justify-center px-6">
+        <div class="absolute inset-0 bg-black/50" onclick="cerrarConfirmacion()"></div>
+        <div class="relative bg-white rounded-3xl p-6 w-full max-w-sm shadow-xl">
+            <h3 id="modal-titulo" class="font-black text-gray-800 text-lg mb-2"></h3>
+            <p id="modal-mensaje" class="text-gray-500 text-sm mb-6"></p>
+            <div class="flex gap-3">
+                <button onclick="cerrarConfirmacion()" class="flex-1 py-3 rounded-2xl border-2 border-gray-200 font-bold text-gray-600 hover:bg-gray-50 transition-colors">
+                    Cancelar
+                </button>
+                <button id="modal-confirmar" class="flex-1 py-3 rounded-2xl bg-red-500 hover:bg-red-600 font-bold text-white transition-colors">
+                    Reiniciar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.min.js"></script>
     <script>
         const API_BASE = window.location.origin;
@@ -511,6 +540,16 @@
                     monaco_editor.trigger('keyboard', 'redo', null);
                 } else if (accion === 'tab') {
                     monaco_editor.trigger('keyboard', 'tab', null);
+                } else if (accion === 'reiniciar') {
+                    if (!ejercicioActual) return;
+                    mostrarConfirmacion(
+                        ' Reiniciar el c digo?',
+                        'Se perder n los cambios que hiciste en este ejercicio.',
+                        () => {
+                            editorAPI._monaco.setValue(ejercicioActual.codigo_inicial);
+                            editorAPI._monaco.focus();
+                        }
+                    );
                 }
             } else {
                 const textarea = document.getElementById('editor-mobile-textarea');
@@ -543,7 +582,19 @@
                     snapshotTimeout = setTimeout(() => historial.guardar(textarea.value), 600);
                     if (lintTimeout) clearTimeout(lintTimeout);
                     lintTimeout = setTimeout(analizarCodigo, 500);
+                } else if (accion === 'reiniciar') {
+                    if (!ejercicioActual) return;
+                    mostrarConfirmacion(
+                        '¿Reiniciar el código?',
+                        'Se perderán los cambios que hiciste en este ejercicio.',
+                        () => {
+                            editorAPI.setValue(ejercicioActual.codigo_inicial);
+                            if (lintTimeout) clearTimeout(lintTimeout);
+                            lintTimeout = setTimeout(analizarCodigo, 500);
+                        }
+                    );
                 }
+
             }
         }
         
@@ -588,6 +639,9 @@
                         textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
                         textarea.selectionStart = textarea.selectionEnd = start + 4;
                         actualizarEditorMobile();
+                        // Guardar snapshot al usar Tab desde el teclado
+                        if (snapshotTimeout) clearTimeout(snapshotTimeout);
+                        snapshotTimeout = setTimeout(() => historial.guardar(textarea.value), 600);
                     }
                 });
                 
@@ -747,6 +801,7 @@
                 actualizarProgresoGlobal();
             } catch (e) {
                 document.getElementById('lista-ejercicios').innerHTML = '<div class="text-red-500 text-sm">Error al cargar. ¿Está corriendo la API?</div>';
+                mostrarToast('No se pudo conectar con el servidor', 'error');
             }
         }
         
@@ -828,7 +883,7 @@
                 const sidebar = document.getElementById('sidebar');
                 if (!sidebar.classList.contains('hidden') && window.innerWidth < 1024) toggleSidebar();
             } catch (e) {
-                alert('Error al cargar el ejercicio');
+                mostrarToast('Error al cargar el ejercicio', 'error');
             }
         }
         
@@ -846,7 +901,7 @@
                 const resultado = await res.json();
                 mostrarResultado(resultado);
             } catch (e) {
-                alert('Error al corregir');
+                mostrarToast('Error al enviar la solución. Intenta de nuevo.', 'error');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = 'Enviar solución 🚀';
@@ -899,6 +954,46 @@
             document.getElementById('xp').textContent = `${xp} XP`;
             document.getElementById('racha').textContent = racha;
         }
+
+        // ==========================================================================
+        // TOAST
+        // ==========================================================================
+        let toastTimeout = null;
+        function mostrarToast(mensaje, tipo = 'error') {
+            const toast = document.getElementById('toast');
+            const toastMensaje = document.getElementById('toast-mensaje');
+            toastMensaje.textContent = mensaje;
+            toast.className = toast.className.replace(/bg-\w+-\d+/g, '');
+            if (tipo === 'error') {
+                toast.classList.add('bg-red-500');
+            } else if (tipo === 'ok') {
+                toast.classList.add('bg-green-500');
+            } else {
+                toast.classList.add('bg-gray-700');
+            }
+            toast.classList.remove('hidden');
+            if (toastTimeout) clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // ==========================================================================
+        // MODAL DE CONFIRMACIÓN
+        // ==========================================================================
+        let _callbackConfirmacion = null;
+        function mostrarConfirmacion(titulo, mensaje, callback) {
+            document.getElementById('modal-titulo').textContent = titulo;
+            document.getElementById('modal-mensaje').textContent = mensaje;
+            _callbackConfirmacion = callback;
+            document.getElementById('modal-confirmacion').classList.remove('hidden');
+        }
+        function cerrarConfirmacion() {
+            document.getElementById('modal-confirmacion').classList.add('hidden');
+            _callbackConfirmacion = null;
+        }
+        document.getElementById('modal-confirmar').addEventListener('click', () => {
+            if (_callbackConfirmacion) _callbackConfirmacion();
+            cerrarConfirmacion();
+        });
     </script>
 </body>
 </html>
